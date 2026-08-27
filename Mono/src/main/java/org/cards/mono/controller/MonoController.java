@@ -19,13 +19,13 @@ import java.util.HashMap;
 public class MonoController {
     private final MonoServicesImpl monoService;
 
-    @GetMapping
+    @GetMapping("/round")
     public Round getNewRound() {
         // get a completely new round
         return monoService.getNewRound();
     }
 
-    @GetMapping("/{id}")
+    @GetMapping("/round/{id}")
     public String getRound(@PathVariable String id) {
         // get round by id
         return "";

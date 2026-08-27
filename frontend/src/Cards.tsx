@@ -18,7 +18,7 @@ function Cards() {
     useEffect(() => {
         const fetchData = async () => {
             try {
-                const response = await fetch('http://localhost:8000/api/mono');
+                const response = await fetch('http://localhost:8000/api/mono/round');
                 if (!response.ok) {
                     throw new Error(`Failed to fetch: ${response.status}`);
                 }
