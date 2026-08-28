@@ -2,18 +2,20 @@ import {useEffect, useState} from 'react'
 import './App.css'
 import {getCardImage} from "./utils/getCardImage.tsx";
 import DropZone from "./components/DropZone";
+import { Card } from "./model/Card.tsx";
+import { Round } from "./model/Round.tsx";
 
 function Cards() {
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);
 
-    const [round, setRound] = useState(null);
-    const [topic, setTopic] = useState(null);
-    const [roundId, setRoundId] = useState(null);
-    const [playerHand, setPlayerHand] = useState([]);
+    //const [round, setRound] = useState<Round | null>(null);
+    const [topic, setTopic] = useState<Card | null>(null);
+    const [roundId, setRoundId] = useState<number | null>(null);
+    const [playerHand, setPlayerHand] = useState<Card[]>([]);
 
-    const [playerCard, setPlayerCard] = useState(null);
-    const [playerBid, setPlayerBid] = useState(null);
+    const [playerCard, setPlayerCard] = useState<Card | null>(null);
+    const [playerBid, setPlayerBid] = useState<Card | null>(null);
 
     useEffect(() => {
         const fetchData = async () => {
@@ -22,9 +24,9 @@ function Cards() {
                 if (!response.ok) {
                     throw new Error(`Failed to fetch: ${response.status}`);
                 }
-                const result = await response.json();
+                const result : Round = await response.json();
                 console.log(result);
-                setRound(result);
+                //setRound(result);
                 setTopic(result.topic);
                 setRoundId(result.roundId);
                 setPlayerHand(Object.values(result.playerCards));
@@ -49,22 +51,18 @@ function Cards() {
     }
 
     // @ts-ignore
-    if (!round.topic) {
+    if (!topic) {
         // @ts-ignore
         return (
             <>
                 <div>
-                    <p>Card image not found: {topic}</p>
+                    <p> Topic card not found </p>
                 </div>
             </>
 
         );
     }
-    const topicCardImage = getCardImage(round.topic.filename);
-
-
-
-
+    const topicCardImage = getCardImage(topic.filename);
 
     if (error) {
         // @ts-ignore
@@ -72,15 +70,15 @@ function Cards() {
     }
 
     // Handle dragging
-    const handleDragStart = (e, card) => {
-        e.dataTransfer.setData("cardId", card.id);
+    const handleDragStart = (e: React.DragEvent, card : Card) => {
+        e.dataTransfer.setData("cardId", String(card.id));
     };
 
     // Handle drop into a target area
-    const handleDrop = (e, type) => {
+    const handleDrop = (e : React.DragEvent,  type : string) => {
         e.preventDefault();
         const cardId = e.dataTransfer.getData("cardId");
-        const card = playerHand.find((c) => c.id === parseInt(cardId));
+        const card = playerHand.find((c : Card) => c.id === parseInt(cardId));
 
         if (!card) return;
 
@@ -96,7 +94,7 @@ function Cards() {
         setPlayerHand((prev) => prev.filter((c) => c.id !== card.id));
     };
 
-    const allowDrop = (e) => e.preventDefault();
+    //const allowDrop = (e: React.DragEvent) => e.preventDefault();
 
     // Submit selection
     const handleSubmit = () => {
@@ -137,7 +135,7 @@ function Cards() {
                 <div >
                     <h1> Topic Card: </h1>
                     <img src={topicCardImage}
-                         alt={topic}
+                         alt={`${topic.cardValue} of ${topic.suite}`}
                          style={{ width: "100px" }}
                     />
                 </div>
@@ -148,7 +146,7 @@ function Cards() {
                         Player hand:
                     </h1>
                     <div style={{ display: 'flex', gap: '10px' }}>
-                        { playerHand.map((card)  => {
+                        { playerHand.map((card : Card)  => {
                             if (!card) {
                                 // @ts-ignore
                                 return (
@@ -164,13 +162,13 @@ function Cards() {
                                 <div key={card.id} style={{ textAlign: 'center' }}>
                                     <img key={card.id}
                                          src={cardSrc}
-                                         alt={`${card.value} of ${card.suite}`}
+                                         alt={`${card.cardValue} of ${card.suite}`}
                                          draggable={true}
                                          onDragStart={(e) => handleDragStart(e, card)}
                                          style={{ width: "100px", cursor:"grab" }}
                                     />
                                     <div>
-                                        {card.value} of {card.suite}
+                                        {card.cardValue} of {card.suite}
                                     </div>
                                 </div>
 
@@ -187,13 +185,13 @@ function Cards() {
                     <DropZone
                         label="playerCard"
                         card={playerCard}
-                        onDrop={(e) => handleDrop(e, "played")}
+                        onDrop={(e : React.DragEvent) => handleDrop(e, "played")}
                     />
                     {/* Bid Card Area */}
                     <DropZone
                         label="Bid Card"
                         card={playerBid}
-                        onDrop={(e) => handleDrop(e, "bid")}
+                        onDrop={(e : React.DragEvent) => handleDrop(e, "bid")}
                     />
                 </div>
             </div>
