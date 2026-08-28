@@ -1,34 +1,71 @@
 package org.cards.mono.model;
 
+import jakarta.persistence.*;
+import lombok.Generated;
+import lombok.Getter;
+import lombok.Setter;
+import org.cards.mono.dtos.RoundDTO;
+
 import java.util.HashMap;
+import java.util.Map;
 
+@Entity
 public class Round {
-    private Long id;
-    private HashMap<Long, Card> playerCards;
-    private HashMap<Long, Card> automaCards;
 
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long roundId;
+
+    @ManyToMany(cascade = CascadeType.ALL)
+    @MapKey(name = "id")
+    private Map<Long, Card> playerCards =  new HashMap<>();
+
+    @ManyToMany(cascade = CascadeType.ALL)
+    @MapKey(name = "id")
+    private Map<Long, Card> automaCards;
+
+    @ManyToOne(cascade = CascadeType.ALL)
     private Card playerCard;
+
+    @ManyToOne(cascade = CascadeType.ALL)
     private Card automaCard;
 
+    @ManyToOne(cascade = CascadeType.ALL)
     private Card playerBid;
+
+    @ManyToOne(cascade = CascadeType.ALL)
     private Card automaBid;
 
+    @ManyToOne(cascade = CascadeType.ALL)
     private Card topic;
+
+    @Getter@Setter
+    private String outcome;
 
     public Round(){
         this.playerCards = new HashMap<>();
         this.automaCards = new HashMap<>();
     }
+    public Round(RoundDTO roundDTO){
+        this.roundId = roundDTO.getRoundId();
+        this.automaCards = roundDTO.getAutomaCards();
+        this.automaCard = roundDTO.getAutomaCard();
+        this.automaBid = roundDTO.getAutomaBid();
 
-    public Long getId() {
-        return id;
+        this.playerCards = roundDTO.getPlayerCards();
+        this.playerCard = roundDTO.getPlayerCard();
+        this.playerBid = roundDTO.getPlayerBid();
     }
 
-    public void setId(Long id) {
-        this.id = id;
+    public Long getRoundId() {
+        return roundId;
     }
 
-    public HashMap<Long, Card> getPlayerCards() {
+    public void setRoundId(Long roundId) {
+        this.roundId = roundId;
+    }
+
+    public Map<Long, Card> getPlayerCards() {
         return playerCards;
     }
 
@@ -36,7 +73,7 @@ public class Round {
         this.playerCards = playerCards;
     }
 
-    public HashMap<Long, Card> getAutomaCards() {
+    public Map<Long, Card> getAutomaCards() {
         return automaCards;
     }
 
@@ -83,4 +120,6 @@ public class Round {
     public void setTopic(Card topic) {
         this.topic = topic;
     }
+
+
 }
