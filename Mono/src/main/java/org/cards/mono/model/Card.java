@@ -1,14 +1,20 @@
 package org.cards.mono.model;
 
+
+import jakarta.persistence.Entity;
+import jakarta.persistence.Id;
+
+@Entity
 public class Card {
+    @Id
     private Long id;
-    private int value;
+    private int cardValue;
     private Suite suite;
     private String filename;
 
-    public Card(Long id, int value, Suite suite, String filename) {
+    public Card(Long id, int cardValue, Suite suite, String filename) {
         this.id = id;
-        this.value = value;
+        this.cardValue = cardValue;
         this.suite = suite;
         this.filename = filename;
     }
@@ -24,12 +30,12 @@ public class Card {
         this.id = id;
     }
 
-    public int getValue() {
-        return value;
+    public int getCardValue() {
+        return cardValue;
     }
 
-    public void setValue(int value) {
-        this.value = value;
+    public void setCardValue(int cardValue) {
+        this.cardValue = cardValue;
     }
 
     public Suite getSuite() {

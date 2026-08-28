@@ -4,9 +4,11 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.cards.mono.model.Card;
 import org.cards.mono.model.Round;
+import org.cards.mono.model.RoundRepository;
 import org.springframework.stereotype.Service;
 
 import java.util.HashMap;
+import java.util.Map;
 
 @Slf4j
 @Service
@@ -14,29 +16,32 @@ import java.util.HashMap;
 public class MonoServicesImpl implements MonoServices {
 
     private final CardServiceImpl cardService;
+    private final AutomaPlayerImpl automaPlayerImpl;
+    private final ResolverServiceImpl resolverServiceImpl;
+
+    private final RoundRepository roundRepository;
 
     @Override
     public Round getNewRound() {
         Round round = new Round();
 
-        HashMap<Long, Card> cards = cardService.getCards(7);
+        Map<Long, Card> cards = cardService.getCards(7);
 
         //3 cards to player
-        round.getPlayerCards().put(Long.valueOf(1), cards.get(Long.valueOf(1)));
-        round.getPlayerCards().put(Long.valueOf(2), cards.get(Long.valueOf(2)));
-        round.getPlayerCards().put(Long.valueOf(3), cards.get(Long.valueOf(3)));
+        round.getPlayerCards().put(1L, cards.get(1L));
+        round.getPlayerCards().put(2L, cards.get(2L));
+        round.getPlayerCards().put(3L, cards.get(3L));
 
         // 3 cards to automa
-        round.getAutomaCards().put(Long.valueOf(1), cards.get(Long.valueOf(4)));
-        round.getAutomaCards().put(Long.valueOf(2), cards.get(Long.valueOf(5)));
-        round.getAutomaCards().put(Long.valueOf(3), cards.get(Long.valueOf(6)));
+        round.getAutomaCards().put(1L, cards.get(4L));
+        round.getAutomaCards().put(2L, cards.get(5L));
+        round.getAutomaCards().put(3L, cards.get(6L));
 
-        round.setTopic(cards.get(Long.valueOf(7)));
+        round.setTopic(cards.get(7L));
 
-        //TODO: better id handling, obviously
-        round.setId(Long.valueOf(42));
+        Round savedRound = roundRepository.save(round);
 
-        return round ;
+        return savedRound ;
 
     }
 
@@ -47,6 +52,13 @@ public class MonoServicesImpl implements MonoServices {
 
     @Override
     public Round playRound(Round round) {
-        return null;
+        Round existingRound = roundRepository.findByRoundId(round.getRoundId());
+        existingRound.setPlayerCard(round.getPlayerCard());
+        existingRound.setPlayerBid(round.getPlayerBid());
+
+        Round fullRound = automaPlayerImpl.automaPlay(existingRound);
+
+        fullRound.setOutcome(resolverServiceImpl.resolveRound(fullRound));
+        return fullRound;
     }
 }

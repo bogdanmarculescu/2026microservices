@@ -12,8 +12,8 @@ function Cards() {
     const [roundId, setRoundId] = useState(null);
     const [playerHand, setPlayerHand] = useState([]);
 
-    const [playedCard, setPlayedCard] = useState(null);
-    const [bidCard, setBidCard] = useState(null);
+    const [playerCard, setPlayerCard] = useState(null);
+    const [playerBid, setPlayerBid] = useState(null);
 
     useEffect(() => {
         const fetchData = async () => {
@@ -23,9 +23,10 @@ function Cards() {
                     throw new Error(`Failed to fetch: ${response.status}`);
                 }
                 const result = await response.json();
+                console.log(result);
                 setRound(result);
                 setTopic(result.topic);
-                setRoundId(result.id);
+                setRoundId(result.roundId);
                 setPlayerHand(Object.values(result.playerCards));
             } catch (err){
                 // @ts-ignore
@@ -48,19 +49,20 @@ function Cards() {
     }
 
     // @ts-ignore
-    const topicCardImage = getCardImage(round.topic.filename);
-
-    if (!topicCardImage) {
+    if (!round.topic) {
         // @ts-ignore
         return (
             <>
                 <div>
-                    <p>Card image not found: {topic.filename}</p>
+                    <p>Card image not found: {topic}</p>
                 </div>
             </>
 
         );
     }
+    const topicCardImage = getCardImage(round.topic.filename);
+
+
 
 
 
@@ -83,11 +85,11 @@ function Cards() {
         if (!card) return;
 
         if (type === "played") {
-            if (playedCard) setPlayerHand((prev) => [...prev, playedCard]);
-            setPlayedCard(card);
+            if (playerCard) setPlayerHand((prev) => [...prev, playerCard]);
+            setPlayerCard(card);
         } else if (type === "bid") {
-            if (bidCard) setPlayerHand((prev) => [...prev, bidCard]);
-            setBidCard(card);
+            if (playerBid) setPlayerHand((prev) => [...prev, playerBid]);
+            setPlayerBid(card);
         }
 
         // remove from hand (so it can't be reused)
@@ -98,7 +100,7 @@ function Cards() {
 
     // Submit selection
     const handleSubmit = () => {
-        if (!playedCard || !bidCard) {
+        if (!playerCard || !playerBid) {
             alert("Please select both a Played card and a Bid card!");
             return;
         }
@@ -106,7 +108,7 @@ function Cards() {
         fetch("http://localhost:8000/api/mono/submitMove", {
             method: "POST",
             headers: { "Content-Type": "application/json" },
-            body: JSON.stringify({ roundId, playedCard, bidCard }),
+            body: JSON.stringify({ roundId, topic, playerCard, playerBid }),
         })
             .then((res) => {
                 if (res.ok) {
@@ -147,16 +149,17 @@ function Cards() {
                     </h1>
                     <div style={{ display: 'flex', gap: '10px' }}>
                         { playerHand.map((card)  => {
-
-                            const cardSrc = getCardImage(card.filename);
-                            if (!cardSrc) {
+                            if (!card) {
                                 // @ts-ignore
                                 return (
-                                    <p key={card.id} style={{color: "red"}}>
-                                        Not found: {card.filename}
+                                    <p key={card} style={{color: "red"}}>
+                                        Not found: {card}
                                     </p>
                                 );
                             }
+                            const cardSrc = getCardImage(card.filename);
+
+
                             return (
                                 <div key={card.id} style={{ textAlign: 'center' }}>
                                     <img key={card.id}
@@ -182,14 +185,14 @@ function Cards() {
 
                     {/* Played Card Area */}
                     <DropZone
-                        label="PlayedCard"
-                        card={playedCard}
+                        label="playerCard"
+                        card={playerCard}
                         onDrop={(e) => handleDrop(e, "played")}
                     />
                     {/* Bid Card Area */}
                     <DropZone
                         label="Bid Card"
-                        card={bidCard}
+                        card={playerBid}
                         onDrop={(e) => handleDrop(e, "bid")}
                     />
                 </div>

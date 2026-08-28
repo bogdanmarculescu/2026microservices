@@ -10,6 +10,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.context.annotation.Import;
 
 import java.util.HashMap;
+import java.util.Map;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
@@ -18,7 +19,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 class MonoApplicationTests {
 
     @Autowired
-    private final CardServiceImpl cardService =  new CardServiceImpl();
+    private CardServiceImpl cardService;
 
     @Test
     void contextLoads() {
@@ -26,12 +27,12 @@ class MonoApplicationTests {
 
     @Test
     void cardServiceSizeTest() throws  Exception {
-        HashMap<Long, Card> cards = cardService.getCards(7);
+        Map<Long, Card> cards = cardService.getCards(7);
         assertEquals(7 ,cards.size());
     }
 
     void cardServiceSizeTestParam(int i) throws  Exception {
-        HashMap<Long, Card> cards = cardService.getCards(i);
+        Map<Long, Card> cards = cardService.getCards(i);
         assertEquals(i ,cards.size());
     }
 
