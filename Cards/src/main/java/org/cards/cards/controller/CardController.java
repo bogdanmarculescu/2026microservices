@@ -6,10 +6,7 @@ import org.cards.cards.model.Card;
 import org.cards.cards.model.CardRepository;
 import org.cards.cards.services.CardService;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -20,7 +17,6 @@ import java.util.Map;
 @RequestMapping("/api/deck")
 public class CardController {
     private final CardService cardService;
-    private final CardRepository cardRepository;
 
     @GetMapping("/{noCards}")
     public ResponseEntity<Map<Long, Card>> getCards(
@@ -28,5 +24,17 @@ public class CardController {
         Map<Long, Card> cards = cardService.getCards(noCards);
 
         return ResponseEntity.ok(cards);
+    }
+
+    @GetMapping
+    public Card getCard(@RequestParam Long cardId){
+        Card result = cardService.getCard(cardId);
+        return result;
+    }
+
+    @PostMapping
+    public ResponseEntity<Card> createCard(@RequestBody Card card){
+        Card result = cardService.createCard(card);
+        return ResponseEntity.ok(result);
     }
 }

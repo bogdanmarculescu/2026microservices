@@ -33,18 +33,10 @@ public class DeckInitializer implements ApplicationRunner {
 
         try (InputStream inputStream =
                      new ClassPathResource("cards.json").getInputStream()) {
-
             List<Card> cards = mapper.readValue(
                     inputStream,
                     new TypeReference<List<Card>>() {}
             );
-
-            long id = 1;
-
-            for (Card card : cards) {
-                card.setId(id++);
-            }
-
             cardRepository.saveAll(cards);
 
         } catch (IOException e) {

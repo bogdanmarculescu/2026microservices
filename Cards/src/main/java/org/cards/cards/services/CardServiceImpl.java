@@ -36,4 +36,46 @@ public class CardServiceImpl implements CardService {
                 ));
         return result;
     }
+
+    @Override
+    public Card getCard(Long id) {
+        Card result = cardRepository.findById(id).orElse(null);
+        return result;
+    }
+
+    @Override
+    public Card createCard(Card card) {
+        Card result = cardRepository.save(card);
+        return result;
+    }
+
+    @Override
+    public Map<Long, Card> getAllCards() {
+        Iterable<Card> allCards = cardRepository.findAll();
+        HashMap<Long, Card> result = new HashMap<>();
+
+        Long index = 0L;
+        for (Card card : allCards) {
+            result.put(index, card);
+            index++;
+        }
+
+        return result;
+    }
+
+    @Override
+    public Map<Long, Card> getCardsByIds(Iterable<Long> ids) {
+        HashMap<Long, Card> result = new HashMap<>();
+
+        Long index = 1L;
+        for (Long id : ids){
+            Card card = cardRepository.findById(id).orElse(null);
+            if(card != null){
+                result.put(index, card);
+                index++;
+            }
+        }
+        return result;
+    }
+
 }

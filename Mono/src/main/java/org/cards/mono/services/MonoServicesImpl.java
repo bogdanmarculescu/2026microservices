@@ -52,7 +52,6 @@ public class MonoServicesImpl implements MonoServices {
 
         round.setTopic(cards.get(7L));
 
-
         Round savedRound = roundRepository.save(round);
 
         return savedRound ;
@@ -60,8 +59,9 @@ public class MonoServicesImpl implements MonoServices {
     }
 
     @Override
-    public Round getRound(int id) {
-        return null;
+    public Round getRound(Long id) {
+        Round round = roundRepository.findByRoundId(id);
+        return round;
     }
 
     @Override

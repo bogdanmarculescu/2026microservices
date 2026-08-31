@@ -4,6 +4,6 @@ import org.cards.mono.model.Round;
 
 public interface MonoServices {
     Round getNewRound();
-    Round getRound(int id);
+    Round getRound(Long id);
     Round playRound(Round round);
 }
