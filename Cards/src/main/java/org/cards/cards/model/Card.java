@@ -1,9 +1,8 @@
-package org.cards.mono.model;
+package org.cards.cards.model;
 
 
 import jakarta.persistence.Entity;
 import jakarta.persistence.Id;
-import org.cards.mono.model.Suite;
 
 @Entity
 public class Card {

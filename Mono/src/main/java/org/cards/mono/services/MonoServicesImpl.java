@@ -2,7 +2,9 @@ package org.cards.mono.services;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.cards.mono.clients.DeckClient;
 import org.cards.mono.model.Card;
+import org.cards.mono.model.CardRepository;
 import org.cards.mono.model.Round;
 import org.cards.mono.model.RoundRepository;
 import org.springframework.stereotype.Service;
@@ -15,18 +17,29 @@ import java.util.Map;
 @RequiredArgsConstructor
 public class MonoServicesImpl implements MonoServices {
 
-    private final CardServiceImpl cardService;
+    private final DeckClient cardService;
     private final AutomaPlayerImpl automaPlayerImpl;
     private final ResolverServiceImpl resolverServiceImpl;
 
     private final RoundRepository roundRepository;
+    private final CardRepository cardRepository;
 
     @Override
     public Round getNewRound() {
         Round round = new Round();
 
-        Map<Long, Card> cards = cardService.getCards(7);
+        HashMap<Long, Card> retrievedCards = cardService.getCards(7);
+        HashMap<Long, Card> cards = new HashMap<Long, Card>();
 
+        for (Map.Entry<Long, Card> entry : retrievedCards.entrySet()) {
+            Card savedCard = cardRepository.save(entry.getValue());
+            cards.put(entry.getKey(), savedCard);
+        }
+
+
+        for(Card card : cards.values()){
+            cardRepository.save(card);
+        }
         //3 cards to player
         round.getPlayerCards().put(1L, cards.get(1L));
         round.getPlayerCards().put(2L, cards.get(2L));
@@ -38,6 +51,7 @@ public class MonoServicesImpl implements MonoServices {
         round.getAutomaCards().put(3L, cards.get(6L));
 
         round.setTopic(cards.get(7L));
+
 
         Round savedRound = roundRepository.save(round);
 

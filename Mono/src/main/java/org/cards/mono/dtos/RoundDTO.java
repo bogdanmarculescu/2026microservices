@@ -2,8 +2,6 @@ package org.cards.mono.dtos;
 
 import org.cards.mono.model.Card;
 
-import jakarta.persistence.*;
-
 import java.util.HashMap;
 
 

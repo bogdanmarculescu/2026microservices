@@ -1,10 +1,10 @@
-package org.cards.mono.services;
+package org.cards.cards.services;
 
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import jakarta.annotation.PostConstruct;
-import org.cards.mono.model.Card;
-import org.cards.mono.model.CardRepository;
+import org.cards.cards.model.Card;
+import org.cards.cards.model.CardRepository;
 import org.springframework.boot.ApplicationArguments;
 import org.springframework.boot.ApplicationRunner;
 import org.springframework.core.io.ClassPathResource;

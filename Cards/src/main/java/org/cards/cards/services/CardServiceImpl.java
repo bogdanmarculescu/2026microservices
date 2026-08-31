@@ -1,20 +1,14 @@
-package org.cards.mono.services;
+package org.cards.cards.services;
 
-import com.fasterxml.jackson.core.type.TypeReference;
-import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.cards.mono.model.Card;
-import org.cards.mono.model.CardRepository;
+import org.cards.cards.model.Card;
+import org.cards.cards.model.CardRepository;
 import org.springframework.stereotype.Service;
-import org.springframework.core.io.ClassPathResource;
 
-import java.io.IOException;
-import java.io.InputStream;
 import java.util.*;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
-import java.util.stream.LongStream;
 
 @Slf4j
 @Service

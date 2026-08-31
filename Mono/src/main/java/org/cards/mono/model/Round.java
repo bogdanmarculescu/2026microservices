@@ -1,7 +1,6 @@
 package org.cards.mono.model;
 
 import jakarta.persistence.*;
-import lombok.Generated;
 import lombok.Getter;
 import lombok.Setter;
 import org.cards.mono.dtos.RoundDTO;

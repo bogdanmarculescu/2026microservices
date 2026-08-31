@@ -1,9 +1,8 @@
-package org.cards.mono.services;
+package org.cards.cards.services;
 
 
-import org.cards.mono.model.Card;
+import org.cards.cards.model.Card;
 
-import java.util.HashMap;
 import java.util.Map;
 
 public interface CardService {
