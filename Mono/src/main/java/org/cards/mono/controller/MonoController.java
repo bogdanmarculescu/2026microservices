@@ -22,9 +22,9 @@ public class MonoController {
     }
 
     @GetMapping("/round/{id}")
-    public String getRound(@PathVariable String id) {
+    public Round getRound(@PathVariable Long id) {
         // get round by id
-        return "";
+        return monoService.getRound(id);
     }
 
     @PostMapping

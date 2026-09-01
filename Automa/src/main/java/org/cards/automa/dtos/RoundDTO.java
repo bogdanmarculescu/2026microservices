@@ -1,7 +1,6 @@
-package org.cards.mono.dtos;
+package org.cards.automa.dtos;
 
-import org.cards.mono.model.Card;
-import org.cards.mono.model.Round;
+import org.cards.automa.dtos.CardDTO;
 
 import java.util.HashMap;
 

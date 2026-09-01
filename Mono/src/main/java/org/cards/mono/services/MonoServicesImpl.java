@@ -3,6 +3,9 @@ package org.cards.mono.services;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.cards.mono.clients.DeckClient;
+import org.cards.mono.configs.KafkaProducer;
+import org.cards.mono.dtos.RoundDTO;
+import org.cards.mono.dtos.RoundMapper;
 import org.cards.mono.model.Card;
 import org.cards.mono.model.CardRepository;
 import org.cards.mono.model.Round;
@@ -23,6 +26,9 @@ public class MonoServicesImpl implements MonoServices {
 
     private final RoundRepository roundRepository;
     private final CardRepository cardRepository;
+
+    private final KafkaProducer kafkaProducer;
+    private final RoundMapper roundMapper;
 
     @Override
     public Round getNewRound() {
@@ -71,6 +77,12 @@ public class MonoServicesImpl implements MonoServices {
         existingRound.setPlayerBid(round.getPlayerBid());
 
         Round fullRound = automaPlayerImpl.automaPlay(existingRound);
+
+        // Kafka send here?
+        RoundDTO automaRoundDTO = roundMapper.toRoundDTO(fullRound);
+        System.out.println("Sending to Kafka");
+        kafkaProducer.send(automaRoundDTO);
+        System.out.println("Sent: " + automaRoundDTO.getRoundId());
 
         fullRound.setOutcome(resolverServiceImpl.resolveRound(fullRound));
         return fullRound;

@@ -1,42 +1,28 @@
-package org.cards.mono.model;
+package org.cards.automa.model;
 
-import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
-import org.cards.mono.dtos.CardDTO;
-import org.cards.mono.dtos.RoundDTO;
+import org.cards.automa.model.Card;
 
 import java.util.HashMap;
 import java.util.Map;
 
-@Entity
 public class Round {
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long roundId;
 
-    @ManyToMany(cascade = CascadeType.ALL)
-    @MapKey(name = "id")
     private Map<Long, Card> playerCards =  new HashMap<>();
 
-    @ManyToMany(cascade = CascadeType.ALL)
-    @MapKey(name = "id")
     private Map<Long, Card> automaCards;
 
-    @ManyToOne(cascade = CascadeType.ALL)
     private Card playerCard;
 
-    @ManyToOne(cascade = CascadeType.ALL)
     private Card automaCard;
 
-    @ManyToOne(cascade = CascadeType.ALL)
     private Card playerBid;
 
-    @ManyToOne(cascade = CascadeType.ALL)
     private Card automaBid;
 
-    @ManyToOne(cascade = CascadeType.ALL)
     private Card topic;
 
     @Getter@Setter
