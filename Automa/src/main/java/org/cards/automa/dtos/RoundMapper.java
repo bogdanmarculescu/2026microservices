@@ -74,6 +74,7 @@ public class RoundMapper {
             Long pIndex = 1L;
             for(CardDTO c : roundDTO.getPlayerCards().values()){
                 round.getPlayerCards().put(pIndex, cardMapper.fromDTO(c));
+                pIndex++;
             }
         }
 
@@ -88,9 +89,9 @@ public class RoundMapper {
             Long aIndex = 1L;
             for(CardDTO c : roundDTO.getAutomaCards().values()){
                 round.getAutomaCards().put(aIndex, cardMapper.fromDTO(c));
+                aIndex++;
             }
         }
-
         return round;
     }
 

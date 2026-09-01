@@ -6,11 +6,14 @@ import org.cards.automa.model.Round;
 import org.springframework.stereotype.Service;
 
 
+@Slf4j
+@Service
 public class AutomaPlayerImpl implements AutomaPlayer{
     @Override
     public Round automaPlay(Round round) {
         //Dummy default play
 
+        System.out.println("Automa Cards:" + round.getAutomaCards().size());
         Card playedCard = round.getAutomaCards().values().stream()
                 .skip(0)
                 .findFirst()
@@ -19,8 +22,8 @@ public class AutomaPlayerImpl implements AutomaPlayer{
                 .skip(1)
                 .findFirst()
                 .orElse(null);
-        System.out.println("Automa Played Card: "+ playedCard + "\n");
-        System.out.println("Automa Bid Card: " + bidCard + "\n");
+        System.out.println("Automa Played Card: "+ playedCard.getFilename() + "\n");
+        System.out.println("Automa Bid Card: " + bidCard.getFilename() + "\n");
 
         round.setAutomaCard(playedCard);
         round.setAutomaBid(bidCard);

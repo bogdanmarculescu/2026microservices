@@ -21,8 +21,13 @@
 
 ### 1.3 Async
 
+Start
 ```
     docker run -d --name=kafka -p 9092:9092 apache/kafka
+```
+Stop
+```
+    docker stop $(docker ps -a -q)
 ```
 
 ## 2. Start frontend
