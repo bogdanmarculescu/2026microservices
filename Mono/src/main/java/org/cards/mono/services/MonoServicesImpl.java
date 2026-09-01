@@ -76,15 +76,20 @@ public class MonoServicesImpl implements MonoServices {
         existingRound.setPlayerCard(round.getPlayerCard());
         existingRound.setPlayerBid(round.getPlayerBid());
 
-        Round fullRound = automaPlayerImpl.automaPlay(existingRound);
 
         // Kafka send here?
-        RoundDTO automaRoundDTO = roundMapper.toRoundDTO(fullRound);
+        RoundDTO automaRoundDTO = roundMapper.toRoundDTO(existingRound);
+
         System.out.println("Sending to Kafka");
         kafkaProducer.send(automaRoundDTO);
         System.out.println("Sent: " + automaRoundDTO.getRoundId());
 
-        fullRound.setOutcome(resolverServiceImpl.resolveRound(fullRound));
-        return fullRound;
+
+        Round fullRound = automaPlayerImpl.automaPlay(existingRound);
+
+        // So... this is unpleasant
+        // TODO: connect this to the correct outcomes
+        existingRound.setOutcome(resolverServiceImpl.resolveRound(fullRound));
+        return existingRound;
     }
 }
