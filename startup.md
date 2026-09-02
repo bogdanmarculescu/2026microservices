@@ -22,3 +22,10 @@
     http://localhost:5173/
     http://localhost:8000/swagger-ui/index.html
 ```
+
+##  4. Checks of various types
+
+Database:
+```
+    http://localhost:8001/h2-console
+```

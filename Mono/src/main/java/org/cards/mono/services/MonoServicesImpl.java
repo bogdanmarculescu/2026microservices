@@ -27,6 +27,8 @@ public class MonoServicesImpl implements MonoServices {
 
         Map<Long, Card> cards = cardService.getCards(7);
 
+        //Replace this with an http call to Deck External service
+
         //3 cards to player
         round.getPlayerCards().put(1L, cards.get(1L));
         round.getPlayerCards().put(2L, cards.get(2L));
