@@ -34,4 +34,45 @@ public class ResolverServiceImpl implements ResolverService {
 
         return outcome;
     }
+
+    @Override
+    public int resolveForPoints(Round round) {
+        // SIMPLE RESOLVER
+        // TODO: some cleverer way to resolve a round
+
+        Card player = round.getPlayerCard();
+        Card automa = round.getAutomaCard();
+        Card topic = round.getTopic();
+
+        int outcome = 0;
+        boolean won = false;
+        if(player.getSuite() == topic.getSuite()){
+            if(automa.getSuite() != topic.getSuite()){
+                //player win
+                //outcome += topic.getCardValue();
+                won = true;
+            }
+            if(player.getCardValue() > automa.getCardValue()){
+                // Small win
+                //outcome += topic.getCardValue();
+                won = true;
+            }
+        }
+        else{
+            if(automa.getSuite() != topic.getSuite()){
+                if(player.getCardValue() > automa.getCardValue()){
+                    //outcome += topic.getCardValue();
+                    won = true;
+                }
+            }
+        }
+        if(won) {
+            outcome += topic.getCardValue();
+        }
+        else{
+            outcome -= topic.getCardValue();
+        }
+
+        return outcome;
+    }
 }

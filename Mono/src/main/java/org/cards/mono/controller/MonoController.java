@@ -50,7 +50,8 @@ public class MonoController {
         //Add the automa card play
 
         Round solvedRound = monoService.playRound(round);
+        log.info("Outcome: " + solvedRound.getOutcome());
 
-        return ResponseEntity.ok(solvedRound.getOutcome());
+        return ResponseEntity.ok("Points: " + solvedRound.getOutcome());
     }
 }

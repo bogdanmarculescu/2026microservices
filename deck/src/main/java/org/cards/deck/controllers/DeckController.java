@@ -19,11 +19,32 @@ public class DeckController{
 
     @GetMapping("/cards")
     public ResponseEntity<Map<Long, Card>> getCards(){
-        //TODO: This needs to be a parameter
+
         Map<Long, Card> result = cardServiceImpl.getCards(7);
         System.out.println("I got this many cards: ====> " + result.size());
 
         return ResponseEntity.ok(result);
+    }
+
+    @GetMapping("/cards/{number}")
+    public ResponseEntity<Map<Long, Card>> getNoCards(
+            @PathVariable int number
+    ){
+        System.out.println("I got this as a parameter: ====> " + number);
+        Map<Long, Card> result = cardServiceImpl.getCards(number);
+        System.out.println("I got this many cards: ====> " + result.size());
+
+        return ResponseEntity.ok(result);
+    }
+
+    @GetMapping("/cards/byId")
+    public ResponseEntity<Card> getCard(
+            @RequestParam Long id
+    ){
+        log.debug("Retrieving: ====> " + id);
+        Card result =  cardServiceImpl.getCardById(id);
+        return ResponseEntity.ok(result);
+
     }
 
 }

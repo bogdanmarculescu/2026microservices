@@ -42,4 +42,12 @@ public class CardServiceImpl implements CardService {
                 ));
         return result;
     }
+
+    @Override
+    public Card getCardById(long id) {
+        Card card = cardRepository.findById(id).orElse(null);
+        return card;
+    }
+
+
 }

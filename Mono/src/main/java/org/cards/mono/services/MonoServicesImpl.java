@@ -4,6 +4,7 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.cards.mono.clients.DeckClient;
 import org.cards.mono.model.Card;
+import org.cards.mono.model.CardRepository;
 import org.cards.mono.model.Round;
 import org.cards.mono.model.RoundRepository;
 import org.springframework.stereotype.Service;
@@ -16,13 +17,14 @@ import java.util.Map;
 @RequiredArgsConstructor
 public class MonoServicesImpl implements MonoServices {
 
-    private final CardServiceImpl cardService;
+    //private final CardServiceImpl cardService;
     private final AutomaPlayerImpl automaPlayerImpl;
     private final ResolverServiceImpl resolverServiceImpl;
 
     private final DeckClient deckClient;
 
     private final RoundRepository roundRepository;
+    private final CardRepository cardRepository;
 
     @Override
     public Round getNewRound() {
@@ -30,8 +32,18 @@ public class MonoServicesImpl implements MonoServices {
 
         //Map<Long, Card> cards = cardService.getCards(7);
 
-        Map<Long, Card> cards = deckClient.getCards(7);
+        Map<Long, Card> retrievedCards = deckClient.getCards(7);
+        HashMap<Long, Card> cards = new HashMap<Long, Card>();
 
+        for (Map.Entry<Long, Card> entry : retrievedCards.entrySet()) {
+            Card savedCard = cardRepository.save(entry.getValue());
+            cards.put(entry.getKey(), savedCard);
+        }
+
+
+        for(Card card : cards.values()){
+            cardRepository.save(card);
+        }
         System.out.println("Remote call =>> " + cards.size());
 
         //Replace this with an http call to Deck External service
@@ -48,10 +60,13 @@ public class MonoServicesImpl implements MonoServices {
 
         round.setTopic(cards.get(7L));
 
-        //Round savedRound = roundRepository.save(round);
+        Round savedRound = roundRepository.save(round);
 
-        return round ;
+        //Example of retrieving individual cards from an external Deck service
+        Card retrievedCard = retrievedCards.get(1L);
+        log.info("Card retrieved => " + retrievedCard.getFilename());
 
+        return savedRound ;
     }
 
     @Override
@@ -67,7 +82,8 @@ public class MonoServicesImpl implements MonoServices {
 
         Round fullRound = automaPlayerImpl.automaPlay(existingRound);
 
-        fullRound.setOutcome(resolverServiceImpl.resolveRound(fullRound));
+        //fullRound.setOutcome(resolverServiceImpl.resolveRound(fullRound));
+        fullRound.setOutcome(resolverServiceImpl.resolveForPoints(fullRound));
         return fullRound;
     }
 }

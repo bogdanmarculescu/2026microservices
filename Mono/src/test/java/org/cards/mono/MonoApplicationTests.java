@@ -1,15 +1,11 @@
 package org.cards.mono;
 
 import org.cards.mono.model.Card;
-import org.cards.mono.services.CardService;
-import org.cards.mono.services.CardServiceImpl;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.context.annotation.Import;
 
-import java.util.HashMap;
 import java.util.Map;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -18,28 +14,8 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 @SpringBootTest
 class MonoApplicationTests {
 
-    @Autowired
-    private CardServiceImpl cardService;
-
     @Test
     void contextLoads() {
-    }
-
-    @Test
-    void cardServiceSizeTest() throws  Exception {
-        Map<Long, Card> cards = cardService.getCards(7);
-        assertEquals(7 ,cards.size());
-    }
-
-    void cardServiceSizeTestParam(int i) throws  Exception {
-        Map<Long, Card> cards = cardService.getCards(i);
-        assertEquals(i ,cards.size());
-    }
-
-    @Test
-    void multipleSizeTests() throws Exception{
-        cardServiceSizeTestParam(1);
-        cardServiceSizeTestParam(11);
     }
 
 }

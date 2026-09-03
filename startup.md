@@ -6,6 +6,16 @@
     cd Mono/
     mvn clean verify -fae
     mvn spring-boot:run
+
+    cd Deck/
+    mvn clean verify -fae
+    mvn spring-boot:run
+```
+
+Command line start on selected port:
+
+```
+mvn spring-boot:run -Dspring-boot.run.arguments=--server.port=8005
 ```
 
 ## 2. Start frontend

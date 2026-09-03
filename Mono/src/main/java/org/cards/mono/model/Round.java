@@ -40,7 +40,7 @@ public class Round {
     private Card topic;
 
     @Getter@Setter
-    private String outcome;
+    private int outcome;
 
     public Round(){
         this.playerCards = new HashMap<>();
