@@ -2,6 +2,7 @@ package org.cards.mono.services;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.cards.mono.clients.DeckClient;
 import org.cards.mono.model.Card;
 import org.cards.mono.model.Round;
 import org.cards.mono.model.RoundRepository;
@@ -19,13 +20,19 @@ public class MonoServicesImpl implements MonoServices {
     private final AutomaPlayerImpl automaPlayerImpl;
     private final ResolverServiceImpl resolverServiceImpl;
 
+    private final DeckClient deckClient;
+
     private final RoundRepository roundRepository;
 
     @Override
     public Round getNewRound() {
         Round round = new Round();
 
-        Map<Long, Card> cards = cardService.getCards(7);
+        //Map<Long, Card> cards = cardService.getCards(7);
+
+        Map<Long, Card> cards = deckClient.getCards(7);
+
+        System.out.println("Remote call =>> " + cards.size());
 
         //Replace this with an http call to Deck External service
 
@@ -41,9 +48,9 @@ public class MonoServicesImpl implements MonoServices {
 
         round.setTopic(cards.get(7L));
 
-        Round savedRound = roundRepository.save(round);
+        //Round savedRound = roundRepository.save(round);
 
-        return savedRound ;
+        return round ;
 
     }
 
