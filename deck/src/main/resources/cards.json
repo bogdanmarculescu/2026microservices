@@ -1,0 +1,80 @@
+[
+  {
+    "id": 11,
+    "cardValue": 11,
+    "suite": "SPADES",
+    "filename": "ace_of_spades.svg"
+  },
+  {
+      "id": 12,
+      "cardValue": 2,
+      "suite": "SPADES",
+      "filename": "2_of_spades.svg"
+    },
+    {
+      "id": 13,
+      "cardValue": 3,
+      "suite": "SPADES",
+      "filename": "3_of_spades.svg"
+    },
+    {
+      "id": 14,
+      "cardValue": 4,
+      "suite": "SPADES",
+      "filename": "4_of_spades.svg"
+    },
+    {
+      "id": 22,
+      "cardValue": 2,
+      "suite": "DIAMONDS",
+      "filename": "2_of_diamonds.svg"
+    },
+    {
+      "id": 23,
+      "cardValue": 3,
+      "suite": "DIAMONDS",
+      "filename": "3_of_diamonds.svg"
+    },
+    {
+      "id": 24,
+      "cardValue": 4,
+      "suite": "DIAMONDS",
+      "filename": "4_of_diamonds.svg"
+    },
+    {
+      "id": 32,
+      "cardValue": 2,
+      "suite": "CLUBS",
+      "filename": "2_of_clubs.svg"
+    },
+    {
+      "id": 33,
+      "cardValue": 3,
+      "suite": "CLUBS",
+      "filename": "3_of_clubs.svg"
+    },
+    {
+      "id": 34,
+      "cardValue": 4,
+      "suite": "CLUBS",
+      "filename": "4_of_clubs.svg"
+    },
+    {
+      "id": 42,
+      "cardValue": 2,
+      "suite": "HEARTS",
+      "filename": "2_of_hearts.svg"
+    },
+    {
+      "id": 43,
+      "cardValue": 3,
+      "suite": "HEARTS",
+      "filename": "3_of_hearts.svg"
+    },
+    {
+      "id": 44,
+      "cardValue": 4,
+      "suite": "HEARTS",
+      "filename": "4_of_hearts.svg"
+    }
+  ]
