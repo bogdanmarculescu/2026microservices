@@ -9,8 +9,6 @@ import org.springframework.core.ParameterizedTypeReference;
 import org.springframework.http.HttpMethod;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestAttribute;
 import org.springframework.web.client.HttpClientErrorException;
 import org.springframework.web.client.RestTemplate;
 
@@ -25,7 +23,7 @@ public class DeckClient {
 
     public DeckClient(
             RestTemplateBuilder builder,
-            @Value ("${deck.service.url}") String url
+            @Value("${deck.service.url}") String url
     ) {
         //this.url = "http://localhost:8001/api/deck/cards";
         this.restTemplate = builder.build();

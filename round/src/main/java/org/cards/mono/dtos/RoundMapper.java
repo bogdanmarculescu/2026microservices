@@ -1,8 +1,7 @@
-package org.cards.resolver.dtos;
+package org.cards.mono.dtos;
 
-import org.cards.resolver.model.Card;
-import org.cards.resolver.model.CardRepository;
-import org.cards.resolver.model.Round;
+import org.cards.mono.model.Card;
+import org.cards.mono.model.Round;
 import org.springframework.stereotype.Component;
 
 @Component
@@ -10,8 +9,7 @@ public class RoundMapper {
 
     private final CardMapper cardMapper;
 
-    public RoundMapper(
-            CardMapper cardMapper) {
+    public RoundMapper(CardMapper cardMapper) {
         this.cardMapper = cardMapper;
     }
 

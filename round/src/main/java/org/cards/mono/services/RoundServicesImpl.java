@@ -4,6 +4,9 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.cards.mono.clients.DeckClient;
 import org.cards.mono.configs.KafkaProducer;
+import org.cards.mono.dtos.CardMapper;
+import org.cards.mono.dtos.RoundDTO;
+import org.cards.mono.dtos.RoundMapper;
 import org.cards.mono.model.Card;
 import org.cards.mono.model.CardRepository;
 import org.cards.mono.model.Round;
@@ -29,6 +32,9 @@ public class RoundServicesImpl implements RoundServices {
 
     private final RoundRepository roundRepository;
     private final CardRepository cardRepository;
+
+    private final RoundMapper roundMapper;
+
 
     @Override
     public Round getNewRound() {
@@ -91,7 +97,10 @@ public class RoundServicesImpl implements RoundServices {
         fullRound.setOutcome(resolverServiceImpl.resolveForPoints(fullRound));
 
         //TODO: THis is where we send the message
-        kafkaProducer.sendText("Test:" + fullRound.getRoundId());
+        //kafkaProducer.sendText("Test:" + fullRound.getRoundId());
+
+        RoundDTO message = roundMapper.toRoundDTO(fullRound);
+        kafkaProducer.sendRound(message);
         log.info("Sending Test => " + fullRound.getRoundId());
 
         return fullRound;

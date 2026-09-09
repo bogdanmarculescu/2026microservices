@@ -1,6 +1,7 @@
 package org.cards.mono.configs;
 
 import lombok.extern.slf4j.Slf4j;
+import org.cards.mono.dtos.RoundDTO;
 import org.springframework.kafka.core.KafkaTemplate;
 import org.springframework.stereotype.Service;
 
@@ -8,28 +9,28 @@ import org.springframework.stereotype.Service;
 @Service
 public class KafkaProducer {
 
-    private final KafkaTemplate<String, String> kafkaTemplate;
+    private final KafkaTemplate<String, RoundDTO> kafkaTemplate;
 
-    public KafkaProducer(KafkaTemplate<String, String> kafkaTemplate) {
+    public KafkaProducer(KafkaTemplate<String, RoundDTO> kafkaTemplate) {
         this.kafkaTemplate = kafkaTemplate;
     }
 
-    public void sendText(String message) {
-        kafkaTemplate.send("round-test", message)
+    public void sendRound(RoundDTO message) {
+        kafkaTemplate.send("round-complete", message)
                 .whenComplete((result, exception) -> {
-            if (exception != null) {
-                log.error("Kafka send FAILED", exception);
-            } else {
-                var metadata = result.getRecordMetadata();
+                    if (exception != null) {
+                        log.error("Kafka send FAILED", exception);
+                    } else {
+                        var metadata = result.getRecordMetadata();
 
-                log.info(
-                        "Kafka send OK: topic={}, partition={}, offset={}",
-                        metadata.topic(),
-                        metadata.partition(),
-                        metadata.offset()
-                );
-            }
-        });
+                        log.info(
+                                "Kafka send OK: topic={}, partition={}, offset={}",
+                                metadata.topic(),
+                                metadata.partition(),
+                                metadata.offset()
+                        );
+                    }
+                });
     }
 
 }

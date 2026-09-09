@@ -1,7 +1,11 @@
 package org.cards.resolver.services;
 
 import lombok.RequiredArgsConstructor;
+import org.cards.resolver.dtos.CardMapper;
+import org.cards.resolver.dtos.RoundDTO;
+import org.cards.resolver.dtos.RoundMapper;
 import org.cards.resolver.model.Card;
+import org.cards.resolver.model.CardRepository;
 import org.cards.resolver.model.Round;
 import org.cards.resolver.model.RoundRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -14,17 +18,20 @@ import java.util.List;
 @RequiredArgsConstructor
 public class ResolverServiceImpl implements ResolverService {
 
-    @Autowired
     private final RoundRepository roundRepository;
+    private final CardRepository cardRepository;
+
+    private final CardMapper cardMapper;
+    private final RoundMapper roundMapper;
 
     @Override
     public int resolveForPoints(Round round) {
         // SIMPLE RESOLVER
         // TODO: some cleverer way to resolve a round
 
-        Card player = round.getPlayerCard();
-        Card automa = round.getAutomaCard();
-        Card topic = round.getTopic();
+        Card player = cardMapper.processCard(round.getPlayerCard());
+        Card automa = cardMapper.processCard(round.getAutomaCard());
+        Card topic = cardMapper.processCard(round.getTopic());
 
         int outcome = 0;
         boolean won = false;
@@ -61,6 +68,12 @@ public class ResolverServiceImpl implements ResolverService {
     }
 
     @Override
+    public int resolveForPoints(RoundDTO round) {
+        Round result = roundMapper.fromDTO(round);
+        return resolveForPoints(result);
+    }
+
+    @Override
     public Round getRound(Long roundId) {
         Round result = roundRepository.findByRoundId(roundId);
         return result;
@@ -71,6 +84,11 @@ public class ResolverServiceImpl implements ResolverService {
         List<Round> result = new ArrayList<Round>();
         roundRepository.findAll().forEach(result::add);
         return result;
+    }
+
+    public void processCards(Round round){
+        Card topic = cardRepository.findById(round.getTopic().getId())
+                .orElseThrow();
     }
 
 

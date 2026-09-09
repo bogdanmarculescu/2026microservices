@@ -8,7 +8,7 @@
         <version>4.1.1</version>
         <relativePath/> <!-- lookup parent from repository -->
     </parent>
-    <groupId>com.cards</groupId>
+    <groupId>org.cards</groupId>
     <artifactId>resolver</artifactId>
     <version>0.0.1-SNAPSHOT</version>
     <name>resolver</name>
