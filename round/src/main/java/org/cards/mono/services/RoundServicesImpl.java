@@ -3,6 +3,7 @@ package org.cards.mono.services;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.cards.mono.clients.DeckClient;
+import org.cards.mono.configs.KafkaProducer;
 import org.cards.mono.model.Card;
 import org.cards.mono.model.CardRepository;
 import org.cards.mono.model.Round;
@@ -20,6 +21,9 @@ public class RoundServicesImpl implements RoundServices {
     //private final CardServiceImpl cardService;
     private final AutomaPlayerImpl automaPlayerImpl;
     private final ResolverServiceImpl resolverServiceImpl;
+
+    //Kafka
+    private final KafkaProducer kafkaProducer;
 
     private final DeckClient deckClient;
 
@@ -85,6 +89,11 @@ public class RoundServicesImpl implements RoundServices {
 
         //fullRound.setOutcome(resolverServiceImpl.resolveRound(fullRound));
         fullRound.setOutcome(resolverServiceImpl.resolveForPoints(fullRound));
+
+        //TODO: THis is where we send the message
+        kafkaProducer.sendText("Test:" + fullRound.getRoundId());
+        log.info("Sending Test => " + fullRound.getRoundId());
+
         return fullRound;
     }
 }

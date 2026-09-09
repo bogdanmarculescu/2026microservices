@@ -1,0 +1,31 @@
+package org.cards.resolver.kafka;
+
+import org.springframework.boot.context.event.ApplicationReadyEvent;
+import org.springframework.context.event.EventListener;
+import org.springframework.kafka.config.KafkaListenerEndpointRegistry;
+import org.springframework.stereotype.Component;
+
+@Component
+public class KafkaDebug {
+
+    private final KafkaListenerEndpointRegistry registry;
+
+    public KafkaDebug(KafkaListenerEndpointRegistry registry) {
+        this.registry = registry;
+    }
+
+    @EventListener(ApplicationReadyEvent.class)
+    public void checkListeners() {
+
+        System.out.println("******** KAFKA LISTENERS ********");
+
+        registry.getListenerContainers().forEach(container -> {
+            System.out.println(
+                    "Listener: " + container.getListenerId()
+                            + " running=" + container.isRunning()
+            );
+        });
+
+        System.out.println("********************************");
+    }
+}
