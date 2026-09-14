@@ -18,6 +18,21 @@ Command line start on selected port:
 mvn spring-boot:run -Dspring-boot.run.arguments=--server.port=8005
 ```
 
+## 1.1 Async 
+
+Starting the Docker container for apache/kafka
+```
+    docker run -d --name=kafka -p 9092:9092 apache/kafka
+```
+
+(-d) - detached
+(-p) - port mapping
+
+Stopping running docker containers:
+```
+    docker stop $(docker ps -a -q)
+```
+
 ## 2. Start frontend
 
 ```
