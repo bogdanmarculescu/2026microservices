@@ -3,6 +3,10 @@ package org.cards.mono.services;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.cards.mono.clients.DeckClient;
+import org.cards.mono.dtos.CardMapper;
+import org.cards.mono.dtos.RoundDTO;
+import org.cards.mono.dtos.RoundMapper;
+import org.cards.mono.kafka.KafkaProducer;
 import org.cards.mono.model.Card;
 import org.cards.mono.model.CardRepository;
 import org.cards.mono.model.Round;
@@ -19,7 +23,14 @@ public class RoundServicesImpl implements RoundServices {
 
     //private final CardServiceImpl cardService;
     private final AutomaPlayerImpl automaPlayerImpl;
+
+    // TODO: remove resolver from when done - cleanup
     private final ResolverServiceImpl resolverServiceImpl;
+
+    private final KafkaProducer kafkaProducer;
+
+    private final CardMapper cardMapper;
+    private final RoundMapper roundMapper;
 
     private final DeckClient deckClient;
 
@@ -81,10 +92,20 @@ public class RoundServicesImpl implements RoundServices {
         existingRound.setPlayerCard(round.getPlayerCard());
         existingRound.setPlayerBid(round.getPlayerBid());
 
+        //Automa player decides what to ddo
         Round fullRound = automaPlayerImpl.automaPlay(existingRound);
+
+        // Round ready to evaluate
+
+        //TODO: Send this to Kafka as object
+        //DONE: Send a string
+        RoundDTO message = roundMapper.toRoundDTO(fullRound);
+
+        kafkaProducer.send(message);
 
         //fullRound.setOutcome(resolverServiceImpl.resolveRound(fullRound));
         fullRound.setOutcome(resolverServiceImpl.resolveForPoints(fullRound));
+
         return fullRound;
     }
 }

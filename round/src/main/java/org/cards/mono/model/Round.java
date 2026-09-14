@@ -46,16 +46,6 @@ public class Round {
         this.playerCards = new HashMap<>();
         this.automaCards = new HashMap<>();
     }
-    public Round(RoundDTO roundDTO){
-        this.roundId = roundDTO.getRoundId();
-        this.automaCards = roundDTO.getAutomaCards();
-        this.automaCard = roundDTO.getAutomaCard();
-        this.automaBid = roundDTO.getAutomaBid();
-
-        this.playerCards = roundDTO.getPlayerCards();
-        this.playerCard = roundDTO.getPlayerCard();
-        this.playerBid = roundDTO.getPlayerBid();
-    }
 
     public Long getRoundId() {
         return roundId;

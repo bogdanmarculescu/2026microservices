@@ -1,26 +1,25 @@
 package org.cards.mono.dtos;
 
-import org.cards.mono.model.Card;
-
-import jakarta.persistence.*;
+import org.cards.mono.dtos.CardDTO;
 
 import java.util.HashMap;
 
 
 public class RoundDTO {
 
-
     private Long roundId;
+    private CardDTO topic;
 
-    private HashMap<Long, Card> automaCards;
-    private HashMap<Long, Card> playerCards;
+    private HashMap<Long, CardDTO> automaCards =  new HashMap<Long, CardDTO>();
+    private HashMap<Long, CardDTO> playerCards =  new HashMap<Long, CardDTO>();
 
+    private CardDTO automaCard;
+    private CardDTO automaBid;
 
-    private Card automaCard;
-    private Card automaBid;
+    private CardDTO playerCard;
+    private CardDTO playerBid;
 
-    private Card playerCard;
-    private Card playerBid;
+    public RoundDTO(){}
 
     public Long getRoundId() {
         return roundId;
@@ -30,51 +29,59 @@ public class RoundDTO {
         this.roundId = roundId;
     }
 
-    public HashMap<Long, Card> getAutomaCards() {
+    public HashMap<Long, CardDTO> getAutomaCards() {
         return automaCards;
     }
 
-    public void setAutomaCards(HashMap<Long, Card> automaCards) {
+    public void setAutomaCards(HashMap<Long, CardDTO> automaCards) {
         this.automaCards = automaCards;
     }
 
-    public HashMap<Long, Card> getPlayerCards() {
+    public HashMap<Long, CardDTO> getPlayerCards() {
         return playerCards;
     }
 
-    public void setPlayerCards(HashMap<Long, Card> playerCards) {
+    public void setPlayerCards(HashMap<Long, CardDTO> playerCards) {
         this.playerCards = playerCards;
     }
 
-    public Card getAutomaCard() {
+    public CardDTO getAutomaCard() {
         return automaCard;
     }
 
-    public void setAutomaCard(Card automaCard) {
+    public void setAutomaCard(CardDTO automaCard) {
         this.automaCard = automaCard;
     }
 
-    public Card getAutomaBid() {
+    public CardDTO getAutomaBid() {
         return automaBid;
     }
 
-    public void setAutomaBid(Card automaBid) {
+    public void setAutomaBid(CardDTO automaBid) {
         this.automaBid = automaBid;
     }
 
-    public Card getPlayerCard() {
+    public CardDTO getPlayerCard() {
         return playerCard;
     }
 
-    public void setPlayerCard(Card playerCard) {
+    public void setPlayerCard(CardDTO playerCard) {
         this.playerCard = playerCard;
     }
 
-    public Card getPlayerBid() {
+    public CardDTO getPlayerBid() {
         return playerBid;
     }
 
-    public void setPlayerBid(Card playerBid) {
+    public void setPlayerBid(CardDTO playerBid) {
         this.playerBid = playerBid;
+    }
+
+    public CardDTO getTopic() {
+        return topic;
+    }
+
+    public void setTopic(CardDTO topic) {
+        this.topic = topic;
     }
 }

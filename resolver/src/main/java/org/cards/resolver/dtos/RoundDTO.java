@@ -1,7 +1,5 @@
 package org.cards.resolver.dtos;
 
-import org.cards.resolver.dtos.CardDTO;
-
 import java.util.HashMap;
 
 

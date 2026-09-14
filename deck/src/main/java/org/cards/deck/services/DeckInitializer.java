@@ -38,13 +38,6 @@ public class DeckInitializer implements ApplicationRunner {
                     inputStream,
                     new TypeReference<List<Card>>() {}
             );
-
-            long id = 1;
-
-            for (Card card : cards) {
-                card.setId(id++);
-            }
-
             cardRepository.saveAll(cards);
 
         } catch (IOException e) {

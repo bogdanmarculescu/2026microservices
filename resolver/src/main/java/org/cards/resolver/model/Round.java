@@ -13,30 +13,29 @@ import java.util.Map;
 public class Round {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long roundId;
 
-    @ManyToMany(cascade = CascadeType.ALL)
+    @ManyToMany
     @MapKey(name = "id")
     private Map<Long, Card> playerCards =  new HashMap<>();
 
-    @ManyToMany(cascade = CascadeType.ALL)
+    @ManyToMany
     @MapKey(name = "id")
     private Map<Long, Card> automaCards;
 
-    @ManyToOne(cascade = CascadeType.ALL)
+    @ManyToOne
     private Card playerCard;
 
-    @ManyToOne(cascade = CascadeType.ALL)
+    @ManyToOne
     private Card automaCard;
 
-    @ManyToOne(cascade = CascadeType.ALL)
+    @ManyToOne
     private Card playerBid;
 
-    @ManyToOne(cascade = CascadeType.ALL)
+    @ManyToOne
     private Card automaBid;
 
-    @ManyToOne(cascade = CascadeType.ALL)
+    @ManyToOne
     private Card topic;
 
     @Getter@Setter
