@@ -53,6 +53,20 @@ Network setup
 Kafka:
 ```
     docker run -d --name=kafka -p 9092:9092 apache/kafka
+    docker run -d \
+  --name kafka \
+  --network micro2026 \
+  -p 9092:9092 \
+  -e KAFKA_NODE_ID=1 \
+  -e KAFKA_PROCESS_ROLES=broker,controller \
+  -e KAFKA_LISTENER_SECURITY_PROTOCOL_MAP=CONTROLLER:PLAINTEXT,HOST:PLAINTEXT,DOCKER:PLAINTEXT \
+  -e KAFKA_LISTENERS=CONTROLLER://:9091,HOST://:9092,DOCKER://:9093 \
+  -e KAFKA_ADVERTISED_LISTENERS=HOST://localhost:9092,DOCKER://kafka:9093 \
+  -e KAFKA_CONTROLLER_LISTENER_NAMES=CONTROLLER \
+  -e KAFKA_CONTROLLER_QUORUM_VOTERS=1@localhost:9091 \
+  -e KAFKA_INTER_BROKER_LISTENER_NAME=DOCKER \
+  -e KAFKA_OFFSETS_TOPIC_REPLICATION_FACTOR=1 \
+  apache/kafka:latest
 ```
 If using RabbitMQ:
 ```
@@ -92,12 +106,66 @@ Running Docker images:
 ```
 
 #### Statup procedure:
+
+- [ ] Create network
 ```
     docker network create micro2026
-    docker run -d --name=kafka --network=micro2026 -p 9092:9092 apache/kafka 
-    
-    docker run -d --name frontend --network micro2026 -p 5173:5173 frontend
-    
-    docker run -d --name [service_name] --network micro2026 [-p 8000:8000] [service]:0.0.1-SNAPSHOT
+```
+
+- Infrastructure: Kafka
+```
+    docker run -d \
+  --name kafka \
+  --network micro2026 \
+  -p 9092:9092 \
+  -e KAFKA_NODE_ID=1 \
+  -e KAFKA_PROCESS_ROLES=broker,controller \
+  -e KAFKA_LISTENER_SECURITY_PROTOCOL_MAP=CONTROLLER:PLAINTEXT,HOST:PLAINTEXT,DOCKER:PLAINTEXT \
+  -e KAFKA_LISTENERS=CONTROLLER://:9091,HOST://:9092,DOCKER://:9093 \
+  -e KAFKA_ADVERTISED_LISTENERS=HOST://localhost:9092,DOCKER://kafka:9093 \
+  -e KAFKA_CONTROLLER_LISTENER_NAMES=CONTROLLER \
+  -e KAFKA_CONTROLLER_QUORUM_VOTERS=1@localhost:9091 \
+  -e KAFKA_INTER_BROKER_LISTENER_NAME=DOCKER \
+  -e KAFKA_OFFSETS_TOPIC_REPLICATION_FACTOR=1 \
+  apache/kafka:latest
+```
+
+- [ ] Infrastructure: Deck service postgres database
+
+```
+docker run -it --rm --name postgres \
+  -e POSTGRES_USER=serviceuser \
+  -e POSTGRES_PASSWORD=servicepwd \
+  -e POSTGRES_DB=deck \
+  -p 5432:5432 \
+  -v postgres_data:/var/lib/postgresql/data \
+  --network micro2026 \
+  -d postgres:15
+```
+
+- [ ] Deck service
+``` 
     docker run -d --name deck --network micro2026 -p 8001:8001 deck:0.0.1-SNAPSHOT
+    
+    OR
+    
+    mvn spring-boot:run
+```
+
+- [ ] Round Service
+
+```
+    mvn spring-boot:run
+```
+
+- [ ] Resolver Service
+
+```
+    docker run -d --name resolver --network micro2026 -p 8006:8006 resolver:0.0.1-SNAPSHOT
+```
+
+- [ ] Running a generic service
+
+```
+    docker run -d --name [service_name] --network micro2026 [-p 8000:8000] [service]:0.0.1-SNAPSHOT
 ```

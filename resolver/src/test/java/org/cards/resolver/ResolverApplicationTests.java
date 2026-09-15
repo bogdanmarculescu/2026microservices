@@ -27,6 +27,7 @@ class ResolverApplicationTests {
     @Test
     void addRound() {
         Round round = new Round();
+        round.setRoundId(42L);
 
         List<Round> before = new ArrayList<Round>();
         roundRepository.findAll().forEach(before::add);
