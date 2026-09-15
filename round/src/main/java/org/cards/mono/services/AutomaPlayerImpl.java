@@ -11,7 +11,6 @@ public class AutomaPlayerImpl implements AutomaPlayer{
     @Override
     public Round automaPlay(Round round) {
         //Dummy default play
-
         Card playedCard = round.getAutomaCards().values().stream()
                 .skip(0)
                 .findFirst()
