@@ -47,4 +47,13 @@ public class DeckController{
 
     }
 
+    @PostMapping("/cards")
+    public ResponseEntity<Card> createCard(
+            @RequestBody Card card
+    ){
+        log.debug("Creating: ====> " + card);
+        Card result =  cardServiceImpl.createCard(card);
+        return ResponseEntity.ok(result);
+    }
+
 }

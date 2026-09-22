@@ -1,5 +1,48 @@
 # Startup Procedure
 
+## 1. Start infrastructure (DBs, kafka)
+```
+ docker compose up -d
+```
+
+## 2. Backend
+
+### 2.1 Make sure images exist
+
+#### 2.1.a
+```
+ mvn clean package
+ docker build -t deck:0.0.1 . 
+ docker build -t [container_name] .
+```
+
+#### 2.1.b
+```
+ mvn spring-boot:build-image
+```
+OR
+```
+ .\mvnw.cmd spring-boot:build-image    
+```
+
+### 2.2 Run images
+
+```
+ docker run -d --name deck --network m2026 -p 8001:8001 -e SPRING_PROFILES_ACTIVE=docker deck:0.0.1
+  docker run -d --name round --network m2026 -p 8000:8000 -e SPRING_PROFILES_ACTIVE=docker round:0.0.1-SNAPSHOT
+  docker run -d --name resolver --network m2026 -p 8006:8006 -e SPRING_PROFILES_ACTIVE=docker resolver:0.0.1-SNAPSHOT
+```
+
+## Frontend
+
+```
+    cd frontend/
+    npm install
+    docker run -d --name frontend --network m2026 -p 5173:5173 frontend
+```
+
+# Deprecated
+
 ## 1. Start backend
 
 ```

@@ -11,13 +11,16 @@ import org.springframework.stereotype.Service;
 @Service
 public class KafkaProducer {
 
-    @Autowired
-    private KafkaTemplate<String, RoundDTO> kafkaTemplate;
+    private final KafkaTemplate<String, RoundDTO> kafkaTemplate;
+
+    public KafkaProducer(KafkaTemplate<String, RoundDTO> kafkaTemplate) {
+        this.kafkaTemplate = kafkaTemplate;
+    }
 
     public void send(RoundDTO message) {
         //log.info("Sending Kafka Message: {}", message);
 
-        this.sendWithTopic("round-test", message);
+        this.sendWithTopic("rounds", message);
         //log.info("SENT TO KAFKA ========= {}", message);
 
         //log.warn("THIS IS A WARNING!");

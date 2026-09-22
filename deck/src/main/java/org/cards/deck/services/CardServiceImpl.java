@@ -15,6 +15,7 @@ import java.util.*;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 import java.util.stream.LongStream;
+import java.util.stream.Stream;
 
 @Slf4j
 @Service
@@ -47,6 +48,25 @@ public class CardServiceImpl implements CardService {
     public Card getCardById(long id) {
         Card card = cardRepository.findById(id).orElse(null);
         return card;
+    }
+
+    @Override
+    public Card createCard(Card card) {
+
+        if(card == null){
+            return null;
+        }
+
+        boolean complete = Stream.of(
+                card.getId(),
+                card.getFilename(),
+                card.getSuite()
+        ).allMatch(Objects::nonNull);
+
+        if(complete){
+            return cardRepository.save(card);
+        }
+        return null;
     }
 
 

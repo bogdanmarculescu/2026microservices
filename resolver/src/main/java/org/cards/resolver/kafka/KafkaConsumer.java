@@ -21,8 +21,8 @@ public class KafkaConsumer {
     }
 
     @KafkaListener(
-            topics = "round-test",
-            groupId = "test-consumer"
+            topics = "rounds",
+            groupId = "round-consumer"
     )
     public void receiveMessage(RoundDTO message) {
 

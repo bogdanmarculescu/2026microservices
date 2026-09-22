@@ -87,8 +87,8 @@ Build image (from Dockerfile):
 #### Option 2:
 Running Docker images:
 ```
-    docker run -d --name deck --network micro2026 -p 8001:8001 deck
-    docker run -d --name frontend
+    docker run -d --name deck --network m2026 -p 8001:8001 -e SPRING_PROFILES_ACTIVE=docker deck:0.0.1
+    docker run -d --name frontend --network m2026 -p 5173:5173 frontend
 ```
 
 #### Statup procedure:

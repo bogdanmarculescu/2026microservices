@@ -1,0 +1,57 @@
+services:
+  postgres_deck:
+    container_name: postgres_deck
+    image: postgres:17
+    environment:
+      POSTGRES_USER: serviceuser
+      POSTGRES_PASSWORD: servicepwd
+      POSTGRES_DB: deck
+    ports:
+      - "5432:5432"
+    volumes:
+      - deck_data:/var/lib/postgresql/data
+    networks:
+      - m2026
+
+  postgres_resolver:
+    container_name: postgres_resolver
+    image: postgres:17
+    environment:
+      POSTGRES_USER: serviceuser
+      POSTGRES_PASSWORD: servicepwd
+      POSTGRES_DB: resolver
+    ports:
+      - "5433:5432"
+    volumes:
+      - resolver_data:/var/lib/postgresql/data
+    networks:
+      - m2026
+
+
+  kafka:
+    image: apache/kafka:latest
+    container_name: kafka
+    ports:
+      - "9092:9092"
+    environment:
+      KAFKA_NODE_ID: 1
+      KAFKA_PROCESS_ROLES: broker,controller
+      KAFKA_LISTENER_SECURITY_PROTOCOL_MAP: CONTROLLER:PLAINTEXT,HOST:PLAINTEXT,DOCKER:PLAINTEXT
+      KAFKA_LISTENERS: CONTROLLER://:9091,HOST://:9092,DOCKER://:9093
+      KAFKA_ADVERTISED_LISTENERS: HOST://localhost:9092,DOCKER://kafka:9093
+      KAFKA_CONTROLLER_LISTENER_NAMES: CONTROLLER
+      KAFKA_CONTROLLER_QUORUM_VOTERS: 1@localhost:9091
+      KAFKA_INTER_BROKER_LISTENER_NAME: DOCKER
+      KAFKA_OFFSETS_TOPIC_REPLICATION_FACTOR: 1
+    networks:
+      - m2026
+
+
+networks:
+  m2026:
+    name: m2026
+    driver: bridge
+
+volumes:
+  deck_data:
+  resolver_data:
