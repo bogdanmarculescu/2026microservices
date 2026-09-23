@@ -15,8 +15,10 @@ spring:
               uri: lb://deck
               predicates:
                 - Path=/api/deck/**
-
-
+            - id: resolver
+              uri: lb://resolver
+              predicates:
+                - Path=/api/resolver/**
 
 server.port: 8100
 management:
