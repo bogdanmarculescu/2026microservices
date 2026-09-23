@@ -38,7 +38,9 @@ OR
 ```
     cd frontend/
     npm install
-    docker run -d --name frontend --network m2026 -p 5173:5173 frontend
+    
+    docker build -t frontend:0.1 .
+    docker run -d --name frontend --network m2026 -p 5173:5173 frontend:0.1
 ```
 
 # Deprecated

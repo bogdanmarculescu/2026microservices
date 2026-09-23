@@ -63,12 +63,15 @@ public class ResolverServiceImpl implements ResolverService {
 
         round.setOutcome(outcome);
 
-        //TODO: sort  out the  db
-        //Round found =  roundRepository.findByRoundId(round.getRoundId());
-        //found.setOutcome(outcome);
-        //roundRepository.save(found);
-
         Round found = saveRound(round);
+
+        // Simulate a longer delay
+        try {
+            Thread.sleep(5000);
+        }
+        catch (InterruptedException e) {
+            e.printStackTrace();
+        }
 
         return outcome;
     }
