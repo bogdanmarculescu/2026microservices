@@ -135,3 +135,15 @@ docker run -it --rm --name postgres -e POSTGRES_USER=serviceuser -e POSTGRES_PAS
 ```
     docker run -d --name [service_name] --network micro2026 [-p 8000:8000] [service]:0.0.1-SNAPSHOT
 ```
+
+## Consul
+```
+    docker run --name=consul-server -d -p 8500:8500 -p 8600:8600/udp hashicorp/consul consul agent -server -ui -node=server-1 -bootstrap-expect=1 -client=0.0.0.0 -data-dir=/consul/data
+    
+    docker run -d --name consul -p 8500:8500 hashicorp/consul:latest agent -dev -client=0.0.0.0
+    
+```
+## Gateway
+```
+docker run -d --name gateway --network m2026 -p 8100:8100 gateway:0.0.1-SNAPSHOT
+```

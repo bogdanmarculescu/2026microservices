@@ -46,6 +46,16 @@ services:
     networks:
       - m2026
 
+  consul:
+    image: hashicorp/consul:2.0.0
+    container_name: consul
+    ports:
+      - "8500:8500"
+      - "8600:8600/udp"
+    command:
+      agent -dev -node=m26 -client=0.0.0.0
+    networks:
+      - m2026
 
 networks:
   m2026:
