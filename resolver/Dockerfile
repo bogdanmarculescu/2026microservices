@@ -1,5 +1,21 @@
-FROM openjdk:21-ea
-COPY ./target/resolver-0.0.1-SNAPSHOT.jar /usr/src/resolver/
-WORKDIR /usr/src/resolver/
-EXPOSE 8006
-CMD ["java", "-jar", "resolver-0.0.1-SNAPSHOT.jar", "--spring.profiles.active=docker"]
+# ---------- Build stage ----------
+FROM maven:3.9.11-eclipse-temurin-21 AS build
+
+WORKDIR /build
+
+COPY pom.xml .
+COPY src ./src
+
+RUN mvn clean package -DskipTests
+
+
+# ---------- Run stage ----------
+FROM eclipse-temurin:21-jre-alpine
+
+WORKDIR /usr/src/resolver
+
+COPY --from=build /build/target/resolver-0.0.1-SNAPSHOT.jar ./resolver.jar
+
+EXPOSE 8001
+
+ENTRYPOINT ["java", "-jar", "resolver.jar", "--spring.profiles.active=docker"]

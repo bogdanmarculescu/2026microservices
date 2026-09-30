@@ -10,6 +10,20 @@ spring:
     gateway:
       server:
         webflux:
+          globalcors:
+            add-to-simple-url-handler-mapping: true
+            cors-configurations:
+              '[/**]':
+                allowedOrigins:
+                  - "http://localhost:5173"
+                allowedHeaders:
+                  - "*"
+                allowedMethods:
+                  - "GET"
+                  - "POST"
+                  - "PUT"
+                  - "OPTIONS"
+                allowCredentials: true
           routes:
             - id: deck
               uri: lb://deck
@@ -19,6 +33,11 @@ spring:
               uri: lb://resolver
               predicates:
                 - Path=/api/resolver/**
+            - id: round
+              uri: lb://round
+              predicates:
+                - Path=/api/round, /api/round/**
+
 
 server.port: 8100
 management:
@@ -26,3 +45,20 @@ management:
     web:
       exposure:
         include: "health,info"
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

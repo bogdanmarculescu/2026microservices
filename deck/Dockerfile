@@ -1,5 +1,21 @@
-FROM openjdk:21-ea
-COPY ./target/deck-0.0.1-SNAPSHOT.jar /usr/src/deck/
-WORKDIR /usr/src/deck/
+# ---------- Build stage ----------
+FROM maven:3.9.11-eclipse-temurin-21 AS build
+
+WORKDIR /build
+
+COPY pom.xml .
+COPY src ./src
+
+RUN mvn clean package -DskipTests
+
+
+# ---------- Run stage ----------
+FROM eclipse-temurin:21-jre-alpine
+
+WORKDIR /usr/src/deck
+
+COPY --from=build /build/target/deck-0.0.1-SNAPSHOT.jar ./deck.jar
+
 EXPOSE 8001
-CMD ["java", "-jar", "deck-0.0.1-SNAPSHOT.jar", "--spring.profiles.active=docker"]
+
+ENTRYPOINT ["java", "-jar", "deck.jar", "--spring.profiles.active=docker"]
