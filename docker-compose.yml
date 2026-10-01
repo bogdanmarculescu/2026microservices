@@ -57,6 +57,85 @@ services:
     networks:
       - m2026
 
+  resolver:
+    image: resolver:0.0.1-SNAPSHOT
+    container_name: resolver
+    build:
+      context: ./resolver
+    ports:
+      - "8006:8006"
+    environment:
+      SPRING_PROFILES_ACTIVE: "docker"
+      SPRING_CONFIG_IMPORT: "optional:consul:"
+      SPRING_CLOUD_CONSUL_HOST: "consul"
+    depends_on:
+      - postgres_resolver
+      - consul
+      - kafka
+    networks:
+      - m2026
+
+  deck:
+    image: deck:0.0.1-SNAPSHOT
+    container_name: deck
+    build:
+      context: ./deck
+    ports:
+      - "8001:8001"
+    environment:
+      SPRING_PROFILES_ACTIVE: "docker"
+      SPRING_CONFIG_IMPORT: "optional:consul:"
+      SPRING_CLOUD_CONSUL_HOST: "consul"
+    depends_on:
+      - postgres_deck
+      - consul
+    networks:
+      - m2026
+
+  round:
+    image: round:0.0.1-SNAPSHOT
+    container_name: round
+    build:
+      context: ./round
+    ports:
+      - "8000:8000"
+    environment:
+      SPRING_PROFILES_ACTIVE: "docker"
+      SPRING_CONFIG_IMPORT: "optional:consul:"
+      SPRING_CLOUD_CONSUL_HOST: "consul"
+    depends_on:
+      - postgres_deck
+      - consul
+      - deck
+    networks:
+      - m2026
+
+  frontend:
+    image: frontend:0.1
+    container_name: frontend
+    build:
+      context: ./frontend
+    ports:
+      - "5173:5173"
+    networks:
+      - m2026
+
+  gateway:
+    image: gateway:0.0.1-SNAPSHOT
+    container_name: gateway
+    build:
+      context: ./gateway
+    environment:
+      SPRING_PROFILES_ACTIVE: "docker"
+      SPRING_CONFIG_IMPORT: "optional:consul:"
+      SPRING_CLOUD_CONSUL_HOST: "consul"
+    ports:
+      - "8100:8100"
+    depends_on:
+      - consul
+    networks:
+      - m2026
+
 networks:
   m2026:
     name: m2026

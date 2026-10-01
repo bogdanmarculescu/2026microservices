@@ -1,5 +1,14 @@
-FROM openjdk:21-ea
-COPY ./target/round-0.0.1-SNAPSHOT.jar /usr/src/round/
-WORKDIR /usr/src/round/
+#Build step
+
+FROM maven:3.9.11-eclipse-temurin-21 AS build
+WORKDIR /build
+COPY pom.xml .
+COPY src ./src
+RUN mvn clean package -DskipTests
+
+# Run step
+FROM eclipse-temurin:21-jre-alpine
+WORKDIR /usr/src/round
+COPY --from=build /build/target/round-0.0.1-SNAPSHOT.jar ./app.jar
 EXPOSE 8000
-CMD ["java", "-jar", "round-0.0.1-SNAPSHOT.jar"]
+ENTRYPOINT ["java", "-jar", "app.jar", "--spring.profiles.active=docker"]
