@@ -17,7 +17,7 @@ import java.util.List;
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/api/resolver")
-@CrossOrigin(origins = "*")
+//@CrossOrigin(origins = "*")
 public class ResolverController {
 
     private final ResolverService resolverService;

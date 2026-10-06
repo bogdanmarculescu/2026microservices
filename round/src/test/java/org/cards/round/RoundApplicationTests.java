@@ -1,0 +1,24 @@
+package org.cards.round;
+
+import org.cards.round.kafka.KafkaProducer;
+import org.junit.jupiter.api.Test;
+import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.context.annotation.Import;
+import org.springframework.test.context.ActiveProfiles;
+import org.springframework.test.context.bean.override.mockito.MockitoBean;
+
+import static org.junit.jupiter.api.Assertions.assertEquals;
+
+@Import(TestcontainersConfiguration.class)
+@SpringBootTest
+@ActiveProfiles("test")
+class RoundApplicationTests {
+
+    @MockitoBean
+    private KafkaProducer kafkaProducer;
+
+    @Test
+    void contextLoads() {
+    }
+
+}

@@ -147,3 +147,22 @@ docker run -it --rm --name postgres -e POSTGRES_USER=serviceuser -e POSTGRES_PAS
 ```
 docker run -d --name gateway --network m2026 -p 8100:8100 gateway:0.0.1-SNAPSHOT
 ```
+
+
+Config checks:
+```
+curl 'http://localhost:8500/v1/kv/config/resolver,silly/data?raw'
+```
+
+KV backup
+```
+server:
+  port: 8106
+spring:
+  cloud:
+    consul:
+      discovery:
+        enable-tag-override: true
+        prefer-ip-address: true
+        instance-id: ${spring.application.name}-cloud:${random.value}
+```

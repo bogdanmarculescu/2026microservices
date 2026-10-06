@@ -59,14 +59,10 @@ services:
 
   resolver:
     image: resolver:0.0.1-SNAPSHOT
-    container_name: resolver
     build:
       context: ./resolver
-    ports:
-      - "8006:8006"
     environment:
-      SPRING_PROFILES_ACTIVE: "docker"
-      SPRING_CONFIG_IMPORT: "optional:consul:"
+      SPRING_PROFILES_ACTIVE: silly
       SPRING_CLOUD_CONSUL_HOST: "consul"
     depends_on:
       - postgres_resolver
