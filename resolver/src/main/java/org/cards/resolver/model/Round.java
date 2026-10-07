@@ -3,9 +3,7 @@ package org.cards.resolver.model;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
-import org.cards.resolver.dtos.RoundDTO;
-import org.cards.resolver.model.Card;
-
+import java.time.Instant;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -40,6 +38,9 @@ public class Round {
 
     @Getter@Setter
     private int outcome;
+
+    @Getter@Setter
+    private Instant solved;
 
     public Round(){
         this.playerCards = new HashMap<>();

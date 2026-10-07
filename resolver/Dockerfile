@@ -11,4 +11,4 @@ FROM eclipse-temurin:21-jre-alpine
 WORKDIR /usr/src/resolver
 COPY --from=build /build/target/resolver-0.0.1-SNAPSHOT.jar ./app.jar
 EXPOSE 8006
-ENTRYPOINT ["java", "-jar", "app.jar", "--spring.profiles.active=docker"]
+ENTRYPOINT ["java", "-jar", "app.jar"]

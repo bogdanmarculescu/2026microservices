@@ -20,7 +20,7 @@ function Cards() {
     useEffect(() => {
         const fetchData = async () => {
             try {
-                const response = await fetch('http://localhost:8000/api/round');
+                const response = await fetch('http://localhost:8100/api/round');
                 if (!response.ok) {
                     throw new Error(`Failed to fetch: ${response.status}`);
                 }
@@ -30,8 +30,7 @@ function Cards() {
                 setTopic(result.topic);
                 setRoundId(result.roundId);
                 setPlayerHand(Object.values(result.playerCards));
-            } catch (err){
-                // @ts-ignore
+            } catch (err) {
                 setError(err);
             } finally {
                 setLoading(false);
@@ -46,13 +45,10 @@ function Cards() {
     }
 
     if (error) {
-        // @ts-ignore
         return <div>Error: {error.message}</div>;
     }
 
-    // @ts-ignore
     if (!topic) {
-        // @ts-ignore
         return (
             <>
                 <div>
@@ -65,7 +61,6 @@ function Cards() {
     const topicCardImage = getCardImage(topic.filename);
 
     if (error) {
-        // @ts-ignore
         return <div>Error: {error.message}</div>;
     }
 
@@ -103,7 +98,7 @@ function Cards() {
             return;
         }
 
-        fetch("http://localhost:8000/api/round/submitMove", {
+        fetch("http://localhost:8100/api/round/submitMove", {
             method: "POST",
             headers: { "Content-Type": "application/json" },
             body: JSON.stringify({ roundId, topic, playerCard, playerBid }),
@@ -118,7 +113,6 @@ function Cards() {
             .catch(() => alert("Network error submitting move."));
     };
 
-    // @ts-ignore
     return (
             <div style={{ padding: "20px" }}>
                 <button
@@ -148,7 +142,6 @@ function Cards() {
                     <div style={{ display: 'flex', gap: '10px' }}>
                         { playerHand.map((card : Card)  => {
                             if (!card) {
-                                // @ts-ignore
                                 return (
                                     <p key={card} style={{color: "red"}}>
                                         Not found: {card}

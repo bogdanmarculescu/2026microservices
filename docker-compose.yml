@@ -65,8 +65,8 @@ services:
     ports:
       - "8006:8006"
     environment:
-      SPRING_PROFILES_ACTIVE: "docker"
-      SPRING_CONFIG_IMPORT: "optional:consul:"
+      SPRING_PROFILES_ACTIVE: silly
+      SPRING_CONFIG_IMPORT: "consul:"
       SPRING_CLOUD_CONSUL_HOST: "consul"
     depends_on:
       - postgres_resolver
@@ -83,7 +83,6 @@ services:
     ports:
       - "8001:8001"
     environment:
-      SPRING_PROFILES_ACTIVE: "docker"
       SPRING_CONFIG_IMPORT: "optional:consul:"
       SPRING_CLOUD_CONSUL_HOST: "consul"
     depends_on:

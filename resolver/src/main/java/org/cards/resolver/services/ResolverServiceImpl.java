@@ -9,6 +9,8 @@ import org.cards.resolver.model.RoundRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.time.Instant;
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -62,6 +64,7 @@ public class ResolverServiceImpl implements ResolverService {
         }
 
         round.setOutcome(outcome);
+        round.setSolved(Instant.now());
 
         Round found = saveRound(round);
 
