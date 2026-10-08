@@ -31,6 +31,6 @@ public class KafkaConsumer {
         Round received = roundMapper.fromDTO(message);
         int outcome = resolverServiceImpl.resolveForPoints(received);
 
-        log.info("OUTCOME ========= {}", outcome);
+        log.info("======= OUTCOME ========= {}", outcome);
     }
 }

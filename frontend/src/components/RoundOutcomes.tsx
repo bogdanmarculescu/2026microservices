@@ -15,7 +15,7 @@ export default function RoundOutcomes() {
     const [rounds, setRound] = useState<Round[]>([]);
 
     useEffect(() => {
-        fetch("http://localhost:8006/api/resolver")
+        fetch("http://localhost:8100/api/resolver")
             .then(response => {
                 if(!response.ok) {
                     throw new Error("Failed to fetch round data");

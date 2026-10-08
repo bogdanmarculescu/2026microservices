@@ -57,13 +57,18 @@ services:
     networks:
       - m2026
 
+  consul-importer:
+    image: consul-importer
+    build: ./consul
+    depends_on:
+      - consul
+    networks:
+      - m2026
+
   resolver:
     image: resolver:0.0.1-SNAPSHOT
-    container_name: resolver
     build:
       context: ./resolver
-    ports:
-      - "8006:8006"
     environment:
       SPRING_PROFILES_ACTIVE: silly
       SPRING_CONFIG_IMPORT: "consul:"
@@ -77,12 +82,10 @@ services:
 
   deck:
     image: deck:0.0.1-SNAPSHOT
-    container_name: deck
     build:
       context: ./deck
-    ports:
-      - "8001:8001"
     environment:
+      SPRING_PROFILES_ACTIVE: docker
       SPRING_CONFIG_IMPORT: "optional:consul:"
       SPRING_CLOUD_CONSUL_HOST: "consul"
     depends_on:
@@ -96,8 +99,6 @@ services:
     container_name: round
     build:
       context: ./round
-    ports:
-      - "8000:8000"
     environment:
       SPRING_PROFILES_ACTIVE: "docker"
       SPRING_CONFIG_IMPORT: "optional:consul:"

@@ -1,6 +1,7 @@
 package org.cards.resolver.services;
 
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.cards.resolver.dtos.RoundMapper;
 import org.cards.resolver.model.Card;
 import org.cards.resolver.model.CardRepository;
@@ -14,6 +15,7 @@ import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
+@Slf4j
 @Service
 @RequiredArgsConstructor
 public class ResolverServiceImpl implements ResolverService {
@@ -70,12 +72,12 @@ public class ResolverServiceImpl implements ResolverService {
 
         // Simulate a longer delay
         try {
-            Thread.sleep(5000);
+            Thread.sleep(15000);
         }
         catch (InterruptedException e) {
             e.printStackTrace();
         }
-
+        log.info("Resolved round: {} @ {}", round.getRoundId(), round.getSolved());
         return outcome;
     }
 

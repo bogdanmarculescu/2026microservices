@@ -1,0 +1,27 @@
+[
+  {
+    "key": "config/",
+    "flags": 0,
+    "value": ""
+  },
+  {
+    "key": "config/deck,docker/",
+    "flags": 0,
+    "value": ""
+  },
+  {
+    "key": "config/deck,docker/data",
+    "flags": 0,
+    "value": "c3ByaW5nOgogIGNsb3VkOgogICAgY29uc3VsOgogICAgICBkaXNjb3Zlcnk6CiAgICAgICAgZW5hYmxlLXRhZy1vdmVycmlkZTogdHJ1ZQogICAgICAgIHByZWZlci1pcC1hZGRyZXNzOiB0cnVlCiAgICAgICAgaW5jbHVkZS1ob3N0bmFtZS1pbi1pbnN0YW5jZS1pZDogdHJ1ZQogICAgICAgIGluc3RhbmNlLWlkOiAke3NwcmluZy5hcHBsaWNhdGlvbi5uYW1lfS1jbG91ZC0ke3JhbmRvbS52YWx1ZX0K"
+  },
+  {
+    "key": "config/resolver,silly/",
+    "flags": 0,
+    "value": ""
+  },
+  {
+    "key": "config/resolver,silly/data",
+    "flags": 0,
+    "value": "c2VydmVyOgogIHBvcnQ6IDgyMDY="
+  }
+]

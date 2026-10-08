@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.time.Instant;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -17,7 +18,7 @@ import java.util.List;
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/api/resolver")
-@CrossOrigin(origins = "*")
+//@CrossOrigin(origins = "*")
 public class ResolverController {
 
     private final ResolverService resolverService;
@@ -26,6 +27,7 @@ public class ResolverController {
     private List<Round> getRounds() {
         List<Round> result = new ArrayList<Round>();
         result.addAll(resolverService.getRounds());
+        log.info("Got a request for rounds @{} - handled by {}", Instant.now(), System.getenv("HOSTNAME"));
         return result;
     }
 

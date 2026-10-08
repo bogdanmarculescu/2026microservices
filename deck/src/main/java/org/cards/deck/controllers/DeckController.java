@@ -22,6 +22,7 @@ public class DeckController{
 
         Map<Long, Card> result = cardServiceImpl.getCards(7);
         System.out.println("I got this many cards: ====> " + result.size());
+        log.info(" ====== Cards (default)  ======");
 
         return ResponseEntity.ok(result);
     }
@@ -33,7 +34,8 @@ public class DeckController{
         System.out.println("I got this as a parameter: ====> " + number);
         Map<Long, Card> result = cardServiceImpl.getCards(number);
         System.out.println("I got this many cards: ====> " + result.size());
-
+        log.info("======   Cards ({})   ======", number);
+        log.info("====== Handling request from: {}  ======", System.getenv("HOSTNAME"));
         return ResponseEntity.ok(result);
     }
 
