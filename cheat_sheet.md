@@ -147,3 +147,18 @@ docker run -it --rm --name postgres -e POSTGRES_USER=serviceuser -e POSTGRES_PAS
 ```
 docker run -d --name gateway --network m2026 -p 8100:8100 gateway:0.0.1-SNAPSHOT
 ```
+
+## Config check
+```
+curl 'http://localhost:8500/v1/kv/config/resolver,silly/data?raw'
+```
+
+### Check Kafka consumers:
+
+```
+docker exec -it kafka \
+  /opt/kafka/bin/kafka-consumer-groups.sh \
+  --bootstrap-server localhost:9092 \
+  --describe \
+  --group round-consumer
+```
