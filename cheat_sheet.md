@@ -162,3 +162,22 @@ docker exec -it kafka \
   --describe \
   --group round-consumer
 ```
+
+### Checking postgres contents:
+
+Connect to db:
+```
+docker exec -it postgres_deck psql -U serviceuser deck
+```
+
+check available dbs and connect to one:
+``` 
+\l
+\c deck
+\dt
+```
+
+see what is there:
+``` 
+select * from card
+```

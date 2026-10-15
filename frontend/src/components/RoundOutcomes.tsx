@@ -28,6 +28,15 @@ export default function RoundOutcomes() {
             .catch(error => console.error(error));
     }, []);
 
+    if(rounds.length === 0){
+        return (
+            <div>
+                <h2>Rounds</h2>
+                <div>Rounds empty - or there's an issue with the service</div>
+            </div>
+        );
+    }
+
     return (
         <div>
             <h2>Rounds</h2>

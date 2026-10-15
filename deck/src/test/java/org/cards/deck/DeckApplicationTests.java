@@ -37,8 +37,11 @@ class DeckApplicationTests {
 
 	@Test
 	void multipleSizeTests() throws Exception{
-		cardServiceSizeTestParam(1);
-		cardServiceSizeTestParam(11);
+		int[] values = {1, 2, 3, 5, 7, 11};
+
+		for (int i: values){
+			cardServiceSizeTestParam(i);
+		}
 	}
 
 }
