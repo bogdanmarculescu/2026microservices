@@ -3,9 +3,14 @@ spring:
     name: gateway
   config:
     import: "optional:consul:"
+  security:
+    oauth2:
+      resourceserver:
+        jwt:
+          issuer-uri: http://localhost:8080/realms/Mikrotjenester
   cloud:
     consul:
-      host: consul
+      host: localhost
       port: 8500
     gateway:
       server:
@@ -28,7 +33,11 @@ spring:
             - id: deck
               uri: lb://deck
               predicates:
-                - Path=/api/deck/**
+                - Path=/api/deck/cards/**
+            - id: deck-secured
+              uri: lb://deck
+              predicates:
+                - Path=/api/deck/secured/**
             - id: resolver
               uri: lb://resolver
               predicates:

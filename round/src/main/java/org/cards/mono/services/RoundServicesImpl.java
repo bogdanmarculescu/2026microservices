@@ -100,11 +100,12 @@ public class RoundServicesImpl implements RoundServices {
         //TODO: Send this to Kafka as object
         //DONE: Send a string
         RoundDTO message = roundMapper.toRoundDTO(fullRound);
+        log.warn("Sending {} to Kafka", message.toString());
 
         kafkaProducer.send(message);
 
         //fullRound.setOutcome(resolverServiceImpl.resolveRound(fullRound));
-        fullRound.setOutcome(resolverServiceImpl.resolveForPoints(fullRound));
+        //fullRound.setOutcome(resolverServiceImpl.resolveForPoints(fullRound));
 
         return fullRound;
     }

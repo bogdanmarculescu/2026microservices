@@ -71,12 +71,13 @@ public class ResolverServiceImpl implements ResolverService {
         Round found = saveRound(round);
 
         // Simulate a longer delay
-        try {
+        /*try {
             Thread.sleep(15000);
         }
         catch (InterruptedException e) {
             e.printStackTrace();
         }
+         */
         log.info("Resolved round: {} @ {}", round.getRoundId(), round.getSolved());
         return outcome;
     }

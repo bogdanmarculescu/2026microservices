@@ -136,6 +136,37 @@ services:
     networks:
       - m2026
 
+  keycloak:
+    image: quay.io/keycloak/keycloak:latest
+    environment:
+      - KC_DB=postgres
+      - KC_DB_URL=jdbc:postgresql://postgreskeycloak:5432/keycloak
+      - KC_DB_USERNAME=keycloak
+      - KC_DB_PASSWORD=db_pass
+      - KEYCLOAK_ADMIN=admin
+      - KEYCLOAK_ADMIN_PASSWORD=admin
+    command:
+      - start-dev
+    ports:
+      - "8080:8080"
+    depends_on:
+      - postgreskeycloak
+    networks:
+      - m2026
+
+  postgreskeycloak:
+    image: postgres:17
+    environment:
+      - POSTGRES_DB=keycloak
+      - POSTGRES_USER=keycloak
+      - POSTGRES_PASSWORD=db_pass
+    ports:
+      - "5434:5432"
+    volumes:
+      - kc_data:/var/lib/postgresql/data
+    networks:
+      - m2026
+
 networks:
   m2026:
     name: m2026
@@ -144,3 +175,4 @@ networks:
 volumes:
   deck_data:
   resolver_data:
+  kc_data:

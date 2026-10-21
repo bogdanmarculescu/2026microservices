@@ -58,4 +58,14 @@ public class DeckController{
         return ResponseEntity.ok(result);
     }
 
+    @GetMapping("/secured/cards")
+    public ResponseEntity<Map<Long, Card>> getSecCards(){
+        log.info(" ====== Cards (secured)  ======");
+        Map<Long, Card> result = cardServiceImpl.getCards(7);
+        System.out.println("Secured Card Endpoint: ====> " + result.size());
+
+
+        return ResponseEntity.ok(result);
+    }
+
 }
