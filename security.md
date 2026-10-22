@@ -60,6 +60,14 @@ TOKEN_RESPONSE=$(curl -s -X POST \
   -d "grant_type=password" \
   -d "username=atester" \
   -d "password=tester")
+  
+  TOKEN_RESPONSE=$(curl -s -X POST \
+  http://keycloak:8080/realms/mikro2026/protocol/openid-connect/token \
+  -H "Content-Type: application/x-www-form-urlencoded" \
+  -d "client_id=resolver-client" \
+  -d "grant_type=password" \
+  -d "username=atester" \
+  -d "password=tester")
 
 TOKEN=$(echo "$TOKEN_RESPONSE" | jq -r '.access_token')
 
@@ -76,6 +84,10 @@ Replace the test credentials with the ones you configured in Keycloak. If your c
 curl -i \
   -H "Authorization: Bearer $TOKEN" \
   http://gateway:8100/api/deck/secured/cards
+  
+  curl -i \
+  -H "Authorization: Bearer $TOKEN" \
+  http://gateway:8100/api/resolver/secured
 ```
 
 ```
@@ -113,3 +125,10 @@ http://keycloak:8080/realms/cards
 If the output differs, fix Keycloak's hostname configuration before debugging Spring Security further.
 
 One final note: if the Gateway itself is not secured and only Deck enforces authentication, the request may reach Deck before receiving the `401`. That is fine for this lab and provides another opportunity to teach where security is actually enforced.
+
+## Checking Deck
+
+```
+curl -i http://deck:8001/api/deck/secured/cards
+```
+Bypasses the security check - since that is done in the gateway. 

@@ -20,7 +20,7 @@ public class SecurityConfig {
                 .authorizeExchange(exchanges -> exchanges
                         .pathMatchers(HttpMethod.OPTIONS, "/**").permitAll()
                         .pathMatchers("/api/deck/secured/cards").authenticated()
-                        .pathMatchers("/api/resolver/secured").authenticated()
+                        .pathMatchers("/api/resolver/secured/**").authenticated()
                         .anyExchange().permitAll()
                 )
                 .oauth2ResourceServer(oauth2 -> oauth2

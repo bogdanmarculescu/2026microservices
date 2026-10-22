@@ -23,7 +23,7 @@ public class ResolverController {
 
     private final ResolverService resolverService;
 
-    @GetMapping
+    @GetMapping("/resolved")
     private List<Round> getRounds() {
         List<Round> result = new ArrayList<Round>();
         result.addAll(resolverService.getRounds());
@@ -31,7 +31,7 @@ public class ResolverController {
         return result;
     }
 
-    @GetMapping("/secured")
+    @GetMapping("/secured/resolved")
     private List<Round> getSecuredRounds() {
         List<Round> result = new ArrayList<Round>();
         result.addAll(resolverService.getRounds());
@@ -39,7 +39,7 @@ public class ResolverController {
         return result;
     }
 
-    @GetMapping("/{id}")
+    @GetMapping("/resolved/{id}")
     private Round getRound(Long roundId) {
         Round round = resolverService.getRound(roundId);
         return round;

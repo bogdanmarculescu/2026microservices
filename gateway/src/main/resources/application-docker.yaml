@@ -38,10 +38,16 @@ spring:
               uri: lb://deck
               predicates:
                 - Path=/api/deck/secured/**
+
+            - id: resolver-secured
+              uri: lb://resolver
+              predicates:
+                - Path=/api/resolver/secured, /api/resolver/secured/**
             - id: resolver
               uri: lb://resolver
               predicates:
-                - Path=/api/resolver/**
+                - Path=/api/resolver/resolved, /api/resolver/resolved/**
+
             - id: round
               uri: lb://round
               predicates:
