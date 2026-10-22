@@ -54,7 +54,7 @@ Inside the same container:
 
 ```
 TOKEN_RESPONSE=$(curl -s -X POST \
-  http://keycloak:8080/realms/Mikrotjenester/protocol/openid-connect/token \
+  http://keycloak:8080/realms/mikro2026/protocol/openid-connect/token \
   -H "Content-Type: application/x-www-form-urlencoded" \
   -d "client_id=deck-client" \
   -d "grant_type=password" \

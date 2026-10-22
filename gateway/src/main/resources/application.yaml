@@ -7,7 +7,7 @@ spring:
     oauth2:
       resourceserver:
         jwt:
-          issuer-uri: http://localhost:8080/realms/Mikrotjenester
+          issuer-uri: http://localhost:8080/realms/mikro2026
   cloud:
     consul:
       host: localhost
@@ -38,6 +38,10 @@ spring:
               uri: lb://deck
               predicates:
                 - Path=/api/deck/secured/**
+            - id: resolver-secured
+              uri: lb://resolver
+              predicates:
+                - Path=/api/resolver/secured
             - id: resolver
               uri: lb://resolver
               predicates:

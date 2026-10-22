@@ -31,6 +31,14 @@ public class ResolverController {
         return result;
     }
 
+    @GetMapping("/secured")
+    private List<Round> getSecuredRounds() {
+        List<Round> result = new ArrayList<Round>();
+        result.addAll(resolverService.getRounds());
+        log.info("Got a SECURED request for rounds @{} - handled by {}", Instant.now(), System.getenv("HOSTNAME"));
+        return result;
+    }
+
     @GetMapping("/{id}")
     private Round getRound(Long roundId) {
         Round round = resolverService.getRound(roundId);

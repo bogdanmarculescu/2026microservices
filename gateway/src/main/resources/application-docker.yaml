@@ -7,7 +7,7 @@ spring:
     oauth2:
       resourceserver:
         jwt:
-          issuer-uri: http://keycloak:8080/realms/Mikrotjenester
+          issuer-uri: http://keycloak:8080/realms/mikro2026
   cloud:
     consul:
       host: consul
