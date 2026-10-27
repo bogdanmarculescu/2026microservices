@@ -59,7 +59,7 @@ services:
 
   consul-importer:
     image: consul-importer
-    build: ./consul
+    build: ../consul
     depends_on:
       - consul
     networks:
@@ -68,7 +68,7 @@ services:
   resolver:
     image: resolver:0.0.1-SNAPSHOT
     build:
-      context: ./resolver
+      context: ../resolver
     environment:
       SPRING_PROFILES_ACTIVE: silly
       SPRING_CONFIG_IMPORT: "consul:"
@@ -83,7 +83,7 @@ services:
   deck:
     image: deck:0.0.1-SNAPSHOT
     build:
-      context: ./deck
+      context: ../deck
     environment:
       SPRING_PROFILES_ACTIVE: docker
       SPRING_CONFIG_IMPORT: "optional:consul:"
@@ -98,7 +98,7 @@ services:
     image: round:0.0.1-SNAPSHOT
     container_name: round
     build:
-      context: ./round
+      context: ../round
     environment:
       SPRING_PROFILES_ACTIVE: "docker"
       SPRING_CONFIG_IMPORT: "optional:consul:"
@@ -114,7 +114,7 @@ services:
     image: frontend:0.1
     container_name: frontend
     build:
-      context: ./frontend
+      context: ../frontend
     ports:
       - "5173:5173"
     networks:
@@ -124,7 +124,7 @@ services:
     image: gateway:0.0.1-SNAPSHOT
     container_name: gateway
     build:
-      context: ./gateway
+      context: ../gateway
     environment:
       SPRING_PROFILES_ACTIVE: "docker"
       SPRING_CONFIG_IMPORT: "optional:consul:"

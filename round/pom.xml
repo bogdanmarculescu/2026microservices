@@ -91,6 +91,7 @@
             <scope>test</scope>
         </dependency>
 
+        <!-- Actuator and Service discovery -->
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-actuator</artifactId>
@@ -104,6 +105,9 @@
             <artifactId>spring-cloud-starter-consul-config</artifactId>
         </dependency>
     </dependencies>
+
+
+
 
     <dependencyManagement>
         <dependencies>

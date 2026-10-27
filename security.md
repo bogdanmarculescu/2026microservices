@@ -7,7 +7,7 @@ The important detail is to use the same issuer URL inside Keycloak's token and S
 
 ## 1. Use a temporary client container
 
-You can do this without modifying your `docker-compose.yml`. Assuming your Docker network is named `m2026`, run a temporary Alpine container that installs `curl` and `jq`:
+You can do this without modifying your `docker/docker-compose.yml`. Assuming your Docker network is named `m2026`, run a temporary Alpine container that installs `curl` and `jq`:
 
 ```
 docker run --rm -it \

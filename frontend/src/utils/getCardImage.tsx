@@ -8,10 +8,14 @@ const cardImages = import.meta.glob("../assets/cardImages/*.svg", { eager: true 
  */
 
 export function getCardImage(fileName: string) {
-    const match = Object.entries(cardImages)
-        .find(([path]) =>
-            path.endsWith(fileName)
-        );
-    // @ts-ignore
-    return match ? match[1].default : null;
+    try {
+        const match = Object.entries(cardImages)
+            .find(([path]) => path.endsWith(fileName));
+        return match ? match[1].default : null;
+    }
+    catch (error) {
+        console.error("Error finding image:", error);
+        return null;
+    }
+
 }

@@ -181,3 +181,22 @@ see what is there:
 ``` 
 select * from card
 ```
+
+
+### Logging 
+
+Check that elasticsearch is up:
+```
+curl -s http://localhost:9200
+
+curl -s 'http://localhost:9200/_cat/indices/cards-logs-*?v' 
+
+printf '{"@timestamp":"2026-10-27T12:00:00Z","message":"ELK pipeline test","service":{"name":"resolver"},"instance_id":"test-1"}\n' | nc -q 1 localhost 5000
+
+docker compose logs --no-color resolver | grep -iE 'logback|appender|configuration|error|exception'
+
+curl -s 'http://localhost:9200/cards-logs-*/_search?pretty&q=message:%22Round%20Resolution%20Complete%22'
+
+
+```
+

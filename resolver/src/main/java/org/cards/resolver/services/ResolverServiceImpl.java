@@ -30,7 +30,13 @@ public class ResolverServiceImpl implements ResolverService {
     @Override
     public int resolveForPoints(Round round) {
         // SIMPLE RESOLVER
-        // TODO: some cleverer way to resolve a round
+        // Log at the START of processing
+
+        log.atInfo()
+                .addKeyValue("round_id", round.getRoundId())
+                .addKeyValue("event_type", "round_resolution_started")
+                .addKeyValue("instance_id", System.getenv("HOSTNAME"))
+                .log("Round Resolution Started");
 
         Card player = round.getPlayerCard();
         Card automa = round.getAutomaCard();
@@ -70,15 +76,14 @@ public class ResolverServiceImpl implements ResolverService {
 
         Round found = saveRound(round);
 
-        // Simulate a longer delay
-        /*try {
-            Thread.sleep(15000);
-        }
-        catch (InterruptedException e) {
-            e.printStackTrace();
-        }
-         */
         log.info("Resolved round: {} @ {}", round.getRoundId(), round.getSolved());
+
+        log.atInfo()
+                .addKeyValue("round_id", round.getRoundId())
+                .addKeyValue("event_type", "round_resolution_completed")
+                .addKeyValue("instance_id", System.getenv("HOSTNAME"))
+                .log("Round Resolution Complete");
+
         return outcome;
     }
 
