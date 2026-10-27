@@ -4,6 +4,7 @@ import {getCardImage} from "./utils/getCardImage.tsx";
 import DropZone from "./components/DropZone";
 import { Card } from "./model/Card.tsx";
 import { Round } from "./model/Round.tsx";
+import {getCardImageRemote} from "./utils/getCardImageRemote.tsx";
 
 function Cards() {
     const [loading, setLoading] = useState(true);
@@ -148,7 +149,8 @@ function Cards() {
                                     </p>
                                 );
                             }
-                            const cardSrc = getCardImage(card.filename);
+                            //const cardSrc = getCardImage(card.filename);
+                            const cardSrc = getCardImageRemote(card.filename);
 
 
                             return (

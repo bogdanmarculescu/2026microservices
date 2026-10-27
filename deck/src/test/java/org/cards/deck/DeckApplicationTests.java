@@ -11,6 +11,7 @@ import org.springframework.test.context.ActiveProfiles;
 import java.util.Map;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 
 @Import(TestcontainersConfiguration.class)
 @SpringBootTest
@@ -42,6 +43,16 @@ class DeckApplicationTests {
 		for (int i: values){
 			cardServiceSizeTestParam(i);
 		}
+	}
+
+	@Test
+	void maxCardsTests() throws Exception{
+
+		assertThrows(
+				RuntimeException.class,
+				() -> cardService.getCards(14)
+		);
+
 	}
 
 }

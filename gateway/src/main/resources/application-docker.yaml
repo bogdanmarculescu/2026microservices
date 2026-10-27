@@ -53,6 +53,12 @@ spring:
               predicates:
                 - Path=/api/round, /api/round/**
 
+            - id: filestorage
+              uri: lb://filestorage
+              predicates:
+                - Path=/api/files/**
+
+
 server.port: 8100
 management:
   endpoints:

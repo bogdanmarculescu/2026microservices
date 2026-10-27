@@ -1,0 +1,195 @@
+services:
+  postgres_deck:
+    container_name: postgres_deck
+    image: postgres:17
+    environment:
+      POSTGRES_USER: serviceuser
+      POSTGRES_PASSWORD: servicepwd
+      POSTGRES_DB: deck
+    ports:
+      - "5432:5432"
+    volumes:
+      - deck_data:/var/lib/postgresql/data
+    networks:
+      - m2026
+
+  postgres_resolver:
+    container_name: postgres_resolver
+    image: postgres:17
+    environment:
+      POSTGRES_USER: serviceuser
+      POSTGRES_PASSWORD: servicepwd
+      POSTGRES_DB: resolver
+    ports:
+      - "5433:5432"
+    volumes:
+      - resolver_data:/var/lib/postgresql/data
+    networks:
+      - m2026
+
+
+  kafka:
+    image: apache/kafka:latest
+    container_name: kafka
+    ports:
+      - "9092:9092"
+    environment:
+      KAFKA_NODE_ID: 1
+      KAFKA_PROCESS_ROLES: broker,controller
+      KAFKA_LISTENER_SECURITY_PROTOCOL_MAP: CONTROLLER:PLAINTEXT,HOST:PLAINTEXT,DOCKER:PLAINTEXT
+      KAFKA_LISTENERS: CONTROLLER://:9091,HOST://:9092,DOCKER://:9093
+      KAFKA_ADVERTISED_LISTENERS: HOST://localhost:9092,DOCKER://kafka:9093
+      KAFKA_CONTROLLER_LISTENER_NAMES: CONTROLLER
+      KAFKA_CONTROLLER_QUORUM_VOTERS: 1@localhost:9091
+      KAFKA_INTER_BROKER_LISTENER_NAME: DOCKER
+      KAFKA_OFFSETS_TOPIC_REPLICATION_FACTOR: 1
+    networks:
+      - m2026
+
+  consul:
+    image: hashicorp/consul:2.0.0
+    container_name: consul
+    ports:
+      - "8500:8500"
+      - "8600:8600/udp"
+    command:
+      agent -dev -node=m26 -client=0.0.0.0
+    networks:
+      - m2026
+
+  consul-importer:
+    image: consul-importer
+    build: ../consul
+    depends_on:
+      - consul
+    networks:
+      - m2026
+
+  resolver:
+    image: resolver:0.0.1-SNAPSHOT
+    build:
+      context: ../resolver
+    environment:
+      SPRING_PROFILES_ACTIVE: silly
+      SPRING_CONFIG_IMPORT: "consul:"
+      SPRING_CLOUD_CONSUL_HOST: "consul"
+    depends_on:
+      - postgres_resolver
+      - consul
+      - kafka
+    networks:
+      - m2026
+
+  deck:
+    image: deck:0.0.1-SNAPSHOT
+    build:
+      context: ../deck
+    environment:
+      SPRING_PROFILES_ACTIVE: docker
+      SPRING_CONFIG_IMPORT: "optional:consul:"
+      SPRING_CLOUD_CONSUL_HOST: "consul"
+    depends_on:
+      - postgres_deck
+      - consul
+    networks:
+      - m2026
+
+  round:
+    image: round:0.0.1-SNAPSHOT
+    container_name: round
+    build:
+      context: ../round
+    environment:
+      SPRING_PROFILES_ACTIVE: "docker"
+      SPRING_CONFIG_IMPORT: "optional:consul:"
+      SPRING_CLOUD_CONSUL_HOST: "consul"
+    depends_on:
+      - postgres_deck
+      - consul
+      - deck
+    networks:
+      - m2026
+
+  frontend:
+    image: frontend:0.1
+    container_name: frontend
+    build:
+      context: ../frontend
+    ports:
+      - "5173:5173"
+    networks:
+      - m2026
+
+  gateway:
+    image: gateway:0.0.1-SNAPSHOT
+    container_name: gateway
+    build:
+      context: ../gateway
+    environment:
+      SPRING_PROFILES_ACTIVE: "docker"
+      SPRING_CONFIG_IMPORT: "optional:consul:"
+      SPRING_CLOUD_CONSUL_HOST: "consul"
+    ports:
+      - "8100:8100"
+    depends_on:
+      - consul
+    networks:
+      - m2026
+
+  filestorage:
+    build: ../filestorage
+    environment:
+      FILE_STORAGE_PATH: /data/files
+      SPRING_APPLICATION_NAME: filestorage
+      SERVER_PORT: 8008
+      SPRING_CLOUD_CONSUL_HOST: consul
+      SPRING_CONFIG_IMPORT: "optional:consul:"
+    volumes:
+      - file_data:/data/files
+    depends_on:
+      - consul
+    networks:
+      - m2026
+
+
+  keycloak:
+    image: quay.io/keycloak/keycloak:latest
+    environment:
+      - KC_DB=postgres
+      - KC_DB_URL=jdbc:postgresql://postgreskeycloak:5432/keycloak
+      - KC_DB_USERNAME=keycloak
+      - KC_DB_PASSWORD=db_pass
+      - KEYCLOAK_ADMIN=admin
+      - KEYCLOAK_ADMIN_PASSWORD=admin
+    command:
+      - start-dev
+    ports:
+      - "8080:8080"
+    depends_on:
+      - postgreskeycloak
+    networks:
+      - m2026
+
+  postgreskeycloak:
+    image: postgres:17
+    environment:
+      - POSTGRES_DB=keycloak
+      - POSTGRES_USER=keycloak
+      - POSTGRES_PASSWORD=db_pass
+    ports:
+      - "5434:5432"
+    volumes:
+      - kc_data:/var/lib/postgresql/data
+    networks:
+      - m2026
+
+networks:
+  m2026:
+    name: m2026
+    driver: bridge
+
+volumes:
+  deck_data:
+  resolver_data:
+  kc_data:
+  file_data:
