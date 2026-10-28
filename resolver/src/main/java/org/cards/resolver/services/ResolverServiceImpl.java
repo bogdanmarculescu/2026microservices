@@ -10,6 +10,7 @@ import org.cards.resolver.model.RoundRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.awt.desktop.SystemSleepEvent;
 import java.time.Instant;
 import java.time.LocalDate;
 import java.util.ArrayList;
@@ -83,6 +84,12 @@ public class ResolverServiceImpl implements ResolverService {
                 .addKeyValue("event_type", "round_resolution_completed")
                 .addKeyValue("instance_id", System.getenv("HOSTNAME"))
                 .log("Round Resolution Complete");
+
+        log.atError()
+                .addKeyValue("event_type", "Panic")
+                .addKeyValue("stress_level", "much")
+                .addKeyValue("instance_id", System.getenv("HOSTNAME"))
+                .log("Error");
 
         return outcome;
     }
