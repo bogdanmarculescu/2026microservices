@@ -132,6 +132,7 @@ services:
       SPRING_PROFILES_ACTIVE: docker
       SPRING_CONFIG_IMPORT: "optional:consul:"
       SPRING_CLOUD_CONSUL_HOST: "consul"
+      LOGSTASH_DESTINATION: logstash:5000
     depends_on:
       - postgres_deck
       - consul

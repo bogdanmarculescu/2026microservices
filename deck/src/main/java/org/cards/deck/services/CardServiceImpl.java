@@ -26,6 +26,14 @@ public class CardServiceImpl implements CardService {
 
     @Override
     public Map<Long, Card> getCards(int number) {
+
+        //Log that I am starting to prepare cards
+        log.atInfo()
+                .addKeyValue("event_type", "cards_request")
+                .addKeyValue("number_requested", number)
+                .addKeyValue("instance_id", System.getenv("HOSTNAME"))
+                .log("Requested Cards");
+
         List<Card> shuffled = new ArrayList<>();
         cardRepository.findAll().forEach(shuffled::add);
 
@@ -41,6 +49,14 @@ public class CardServiceImpl implements CardService {
                         Long::valueOf,
                         shuffled::get
                 ));
+
+        // Log that I am ready with the cards
+        log.atInfo()
+                .addKeyValue("event_type", "cards_delivered")
+                .addKeyValue("number_provided", result.size())
+                .addKeyValue("instance_id", System.getenv("HOSTNAME"))
+                .log("Provided Cards");
+
         return result;
     }
 

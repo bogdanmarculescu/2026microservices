@@ -87,7 +87,15 @@ curl -i \
   
   curl -i \
   -H "Authorization: Bearer $TOKEN" \
+  http://deck:8001/api/deck/secured/cards
+  
+  curl -i \
+  -H "Authorization: Bearer $TOKEN" \
   http://gateway:8100/api/resolver/secured
+  
+    curl -i \
+  -H "Authorization: Bearer $TOKEN" \
+  http://resolver:8206/api/resolver/secured
 ```
 
 ```
