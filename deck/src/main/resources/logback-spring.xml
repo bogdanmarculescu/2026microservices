@@ -5,7 +5,9 @@
     <appender name="CONSOLE"
               class="ch.qos.logback.core.ConsoleAppender">
         <encoder class="net.logstash.logback.encoder.LogstashEncoder">
-            <customFields>{"service":{"name":"resolver"}}</customFields>
+            <customFields>{"service":{"name":"deck"}}</customFields>
+            <mdcKeyFieldName>traceId=trace.id</mdcKeyFieldName>
+            <mdcKeyFieldName>spanId=span.id</mdcKeyFieldName>
         </encoder>
     </appender>
 
@@ -17,6 +19,8 @@
 
         <encoder class="net.logstash.logback.encoder.LogstashEncoder">
             <customFields>{"service":{"name":"deck"}}</customFields>
+            <mdcKeyFieldName>traceId=trace.id</mdcKeyFieldName>
+            <mdcKeyFieldName>spanId=span.id</mdcKeyFieldName>
         </encoder>
     </appender>
 

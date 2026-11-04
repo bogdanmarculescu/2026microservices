@@ -33,7 +33,7 @@ class DeckApplicationTests {
 
 	void cardServiceSizeTestParam(int i) throws  Exception {
 		Map<Long, Card> cards = cardService.getCards(i);
-		assertEquals(i ,cards.size());
+		assertEquals(i, cards.size());
 	}
 
 	@Test
@@ -50,7 +50,7 @@ class DeckApplicationTests {
 
 		assertThrows(
 				RuntimeException.class,
-				() -> cardService.getCards(14)
+				() -> cardService.getCards(16)
 		);
 
 	}

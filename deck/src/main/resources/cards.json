@@ -60,6 +60,12 @@
       "filename": "4_of_clubs.svg"
     },
     {
+      "id": 35,
+      "cardValue": 5,
+      "suite": "CLUBS",
+      "filename": "5_of_clubs.svg"
+    },
+    {
       "id": 42,
       "cardValue": 2,
       "suite": "HEARTS",
@@ -76,5 +82,11 @@
       "cardValue": 4,
       "suite": "HEARTS",
       "filename": "4_of_hearts.svg"
+    },
+    {
+      "id": 45,
+      "cardValue": 5,
+      "suite": "HEARTS",
+      "filename": "5_of_hearts.svg"
     }
   ]
