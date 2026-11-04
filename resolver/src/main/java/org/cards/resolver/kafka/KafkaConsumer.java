@@ -26,7 +26,7 @@ public class KafkaConsumer {
     )
     public void receiveMessage(RoundDTO message) {
 
-        log.info("KAFKA RECEIVED ========= {}", message);
+        log.warn("KAFKA RECEIVED ========= {}", message.getRoundId());
 
         Round received = roundMapper.fromDTO(message);
         int outcome = resolverServiceImpl.resolveForPoints(received);

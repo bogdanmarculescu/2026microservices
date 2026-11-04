@@ -27,6 +27,20 @@ services:
     networks:
       - m2026
 
+  postgres_rounds:
+    container_name: postgres_rounds
+    image: postgres:17
+    environment:
+      POSTGRES_USER: serviceuser
+      POSTGRES_PASSWORD: servicepwd
+      POSTGRES_DB: rounds
+    ports:
+      - "5435:5432"
+    volumes:
+      - round_data:/var/lib/postgresql/data
+    networks:
+      - m2026
+
 
   kafka:
     image: apache/kafka:latest
@@ -149,7 +163,7 @@ services:
       SPRING_CONFIG_IMPORT: "optional:consul:"
       SPRING_CLOUD_CONSUL_HOST: "consul"
     depends_on:
-      - postgres_deck
+      - postgres_rounds
       - consul
       - deck
     networks:
@@ -239,3 +253,4 @@ volumes:
   kc_data:
   elasticsearch_data:
   file_data:
+  round_data:

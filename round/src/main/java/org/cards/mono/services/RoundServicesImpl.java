@@ -24,9 +24,6 @@ public class RoundServicesImpl implements RoundServices {
     //private final CardServiceImpl cardService;
     private final AutomaPlayerImpl automaPlayerImpl;
 
-    // TODO: remove resolver from when done - cleanup
-    private final ResolverServiceImpl resolverServiceImpl;
-
     private final KafkaProducer kafkaProducer;
 
     private final CardMapper cardMapper;
@@ -44,6 +41,7 @@ public class RoundServicesImpl implements RoundServices {
         //Map<Long, Card> cards = cardService.getCards(7);
 
         Map<Long, Card> retrievedCards = deckClient.getCards(7);
+
         HashMap<Long, Card> cards = new HashMap<Long, Card>();
 
         for (Map.Entry<Long, Card> entry : retrievedCards.entrySet()) {
@@ -52,12 +50,9 @@ public class RoundServicesImpl implements RoundServices {
         }
 
 
-        for(Card card : cards.values()){
-            cardRepository.save(card);
-        }
+        cardRepository.saveAll(cards.values());
         System.out.println("Remote call =>> " + cards.size());
 
-        //Replace this with an http call to Deck External service
 
         //3 cards to player
         round.getPlayerCards().put(1L, cards.get(1L));
@@ -74,8 +69,9 @@ public class RoundServicesImpl implements RoundServices {
         Round savedRound = roundRepository.save(round);
 
         //Example of retrieving individual cards from an external Deck service
-        Card retrievedCard = retrievedCards.get(1L);
-        log.info("Card retrieved => " + retrievedCard.getFilename());
+        //Card retrievedCard = retrievedCards.get(1L);
+        System.out.println("Topic Card -- > " + cards.get(7L).getFilename());
+        log.info("Topic Card => {}", cards.get(7L).getFilename());
 
         return savedRound ;
     }
@@ -100,7 +96,7 @@ public class RoundServicesImpl implements RoundServices {
         //TODO: Send this to Kafka as object
         //DONE: Send a string
         RoundDTO message = roundMapper.toRoundDTO(fullRound);
-        log.warn("Sending {} to Kafka", message.toString());
+        log.warn("Sending {} to Kafka", message.getRoundId());
 
         kafkaProducer.send(message);
 

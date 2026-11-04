@@ -21,8 +21,9 @@ public class KafkaProducer {
         //log.info("Sending Kafka Message: {}", message);
 
         this.sendWithTopic("rounds", message);
-        log.info("SENT TO KAFKA ========= {} on topic {}", message, "rounds");
+        log.warn("SENT TO KAFKA ========= {} on topic {}", message, "rounds");
 
+        log.warn("SENT TO KAFKA ID => {}", message.getRoundId());
         //log.warn("THIS IS A WARNING!");
     }
 

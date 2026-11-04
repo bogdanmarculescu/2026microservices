@@ -121,8 +121,10 @@ public class ResolverServiceImpl implements ResolverService {
         if(found == null){
             found = new Round();
         }
+        found.setRoundId(round.getRoundId());
 
         found.setOutcome(round.getOutcome());
+        found.setSolved(round.getSolved());
 
         found.setTopic(processCard(round.getTopic()));
         found.setPlayerCard(processCard(round.getPlayerCard()));
@@ -142,6 +144,7 @@ public class ResolverServiceImpl implements ResolverService {
             l++;
         }
 
+        log.warn("SAVING -> RoundId {} ----> class {}", found.getRoundId(), found.getClass().getName());
         roundRepository.save(found);
 
         return found;

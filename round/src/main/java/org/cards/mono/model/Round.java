@@ -22,7 +22,7 @@ public class Round {
 
     @ManyToMany(cascade = CascadeType.ALL)
     @MapKey(name = "id")
-    private Map<Long, Card> automaCards;
+    private Map<Long, Card> automaCards =  new HashMap<>();
 
     @ManyToOne(cascade = CascadeType.ALL)
     private Card playerCard;
