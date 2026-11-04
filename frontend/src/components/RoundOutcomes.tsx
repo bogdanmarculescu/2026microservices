@@ -37,6 +37,8 @@ export default function RoundOutcomes() {
         );
     }
 
+    console.log(rounds);
+
     return (
         <div>
             <h2>Rounds</h2>

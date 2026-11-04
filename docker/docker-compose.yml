@@ -212,6 +212,21 @@ services:
     networks:
       - m2026
 
+  filestorage:
+    build: ../filestorage
+    environment:
+      FILE_STORAGE_PATH: /data/files
+      SPRING_APPLICATION_NAME: filestorage
+      SERVER_PORT: 8008
+      SPRING_CLOUD_CONSUL_HOST: consul
+      SPRING_CONFIG_IMPORT: "optional:consul:"
+    volumes:
+      - file_data:/data/files
+    depends_on:
+      - consul
+    networks:
+      - m2026
+
 networks:
   m2026:
     name: m2026
@@ -223,3 +238,4 @@ volumes:
   resolver_data:
   kc_data:
   elasticsearch_data:
+  file_data:

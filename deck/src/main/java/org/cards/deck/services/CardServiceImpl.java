@@ -4,10 +4,13 @@ import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.cards.deck.demo.DeckDemoMode;
 import org.cards.deck.model.Card;
 import org.cards.deck.model.CardRepository;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.core.io.ClassPathResource;
+import org.springframework.web.server.ResponseStatusException;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -23,9 +26,23 @@ import java.util.stream.Stream;
 public class CardServiceImpl implements CardService {
 
     private final CardRepository cardRepository;
+    private final DeckDemoMode demoMode;
 
     @Override
     public Map<Long, Card> getCards(int number) {
+
+        if (demoMode.isFailing()) {
+            log.atError()
+                    .addKeyValue("event_type", "deck_failure_mode")
+                    .addKeyValue("number_requested", number)
+                    .addKeyValue("instance_id", System.getenv("HOSTNAME"))
+                    .log("Requested Cards");
+
+            throw new ResponseStatusException(
+                    HttpStatus.SERVICE_UNAVAILABLE,
+                    "Simulated Deck failure"
+            );
+        }
 
         //Log that I am starting to prepare cards
         log.atInfo()
@@ -84,6 +101,8 @@ public class CardServiceImpl implements CardService {
         }
         return null;
     }
+
+
 
 
 }

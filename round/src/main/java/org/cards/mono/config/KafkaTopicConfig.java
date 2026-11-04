@@ -1,4 +1,4 @@
-package org.cards.mono.configs;
+package org.cards.mono.config;
 
 import org.apache.kafka.clients.admin.NewTopic;
 import org.springframework.context.annotation.Bean;

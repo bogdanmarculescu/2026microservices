@@ -118,27 +118,32 @@ public class ResolverServiceImpl implements ResolverService {
     public Round saveRound(Round round) {
         Round found = roundRepository.findByRoundId(round.getRoundId());
 
-        Card topic = processCard(round.getTopic());
-        Card playerCard = processCard(round.getPlayerCard());
-        Card automaCard = processCard(round.getAutomaCard());
-
-        Card playerBid = processCard(round.getPlayerBid());
-        Card automaBid = processCard(round.getAutomaBid());
-
-        for(Card card : round.getPlayerCards().values()){
-            processCard(card);
-        }
-
-        for(Card card : round.getAutomaCards().values()){
-            processCard(card);
-        }
-
         if(found == null){
-            found = roundRepository.save(round);
+            found = new Round();
         }
-        else {
-            found.setOutcome(round.getOutcome());
+
+        found.setOutcome(round.getOutcome());
+
+        found.setTopic(processCard(round.getTopic()));
+        found.setPlayerCard(processCard(round.getPlayerCard()));
+        found.setAutomaCard(processCard(round.getAutomaCard()));
+
+        found.setPlayerBid(processCard(round.getPlayerBid()));
+        found.setAutomaBid(processCard(round.getAutomaBid()));
+
+        long l=1;
+        for(Card card : round.getPlayerCards().values()){
+            found.getPlayerCards().put(l, processCard(card));
+            l++;
         }
+        l=1;
+        for(Card card : round.getAutomaCards().values()){
+            found.getAutomaCards().put(l, processCard(card));
+            l++;
+        }
+
+        roundRepository.save(found);
+
         return found;
     }
 

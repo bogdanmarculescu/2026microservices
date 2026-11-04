@@ -200,3 +200,9 @@ curl -s 'http://localhost:9200/cards-logs-*/_search?pretty&q=message:%22Round%20
 
 ```
 
+
+``` 
+curl -X POST "http://localhost:8100/api/deck/demo/failure?enabled=true"
+
+curl -X POST "http://localhost:8100/api/deck/demo/failure?enabled=false"
+```

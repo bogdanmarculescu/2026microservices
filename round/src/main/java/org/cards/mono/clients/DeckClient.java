@@ -1,16 +1,19 @@
 package org.cards.mono.clients;
 
 
-import lombok.RequiredArgsConstructor;
+import io.github.resilience4j.circuitbreaker.CallNotPermittedException;
 import lombok.extern.slf4j.Slf4j;
+import org.cards.mono.exceptions.DeckUnavailableException;
 import org.cards.mono.model.Card;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.core.ParameterizedTypeReference;
-import org.springframework.http.HttpMethod;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.HttpClientErrorException;
 import org.springframework.web.client.RestClient;
+
+import io.github.resilience4j.circuitbreaker.CircuitBreaker;
+import io.github.resilience4j.circuitbreaker.CircuitBreakerRegistry;
+import org.springframework.web.client.RestClientException;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -20,12 +23,16 @@ import java.util.Map;
 public class DeckClient {
     private final String url;
     private final RestClient restClient;
+    private final CircuitBreaker circuitBreaker;
 
     public DeckClient(
-            @Value ("${deck.service.url}") String url
+            RestClient deckRestClient,
+            CircuitBreaker deckCircuitBreaker,
+            @Value("${deck.service.url}") String url
     ) {
         //this.url = "http://localhost:8001/api/deck/cards";
-        this.restClient = RestClient.create();
+        this.restClient = deckRestClient;
+        this.circuitBreaker = deckCircuitBreaker;
         this.url = url;
     }
 
@@ -35,15 +42,28 @@ public class DeckClient {
         HashMap<Long, Card> cards = new HashMap<>();
 
         try {
-            cards = restClient
+            cards = circuitBreaker.executeSupplier(() ->
+                    restClient
                     .get()
                     .uri(callUrl)
                     .retrieve()
-                    .body(new ParameterizedTypeReference<HashMap<Long, Card>>() {});
+                    .body(new ParameterizedTypeReference<HashMap<Long, Card>>() {})
+            );
         }
-        catch (HttpClientErrorException e) {
-            e.printStackTrace();
-            log.error("Maybe Start the Deck service?");
+        catch (CallNotPermittedException e){
+            log.atError()
+                    .addKeyValue("event_type", "Circuit_break")
+                    .addKeyValue("Position", "OPEN")
+                    .addKeyValue("instance_id", System.getenv("HOSTNAME"))
+                    .log("Circuit Breaker is OPEN");
+            throw new DeckUnavailableException("Deck temporarily unavailable", e);
+        }
+        catch (RestClientException e){
+            log.atError()
+                    .addKeyValue("event_type", "Deck unavailable")
+                    .addKeyValue("instance_id", System.getenv("HOSTNAME"))
+                    .log("Could not communicate with Deck");
+            throw new DeckUnavailableException("Deck temporarily unavailable", e);
         }
         return cards;
     }
